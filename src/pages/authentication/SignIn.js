@@ -1,8 +1,11 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import "./authentication.css";
 
 const SignIn = () => {
   return (
     <div className='container fluid'>
+      <div className='explore'>Explore</div>
       <div className='row'>
         <div className='col-md-4 offset-md-4 mt-5'>
           <section className='text-center'>
@@ -11,7 +14,10 @@ const SignIn = () => {
             <h4 className='p-2'>Welcome Back</h4>
 
             <p>
-              Don't have an account, <a href=''>Sign Up</a>
+              Don't have an account,
+              <Link to='signup'>
+                <a>Sign Up</a>
+              </Link>
             </p>
           </section>
 

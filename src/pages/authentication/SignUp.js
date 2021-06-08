@@ -1,8 +1,10 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const SignUp = () => {
   return (
     <div className='container fluid'>
+      <div className='explore'>Explore</div>
       <div className='row'>
         <div className='col-md-4 offset-md-4 mt-5'>
           <section className='text-center'>
@@ -11,7 +13,10 @@ const SignUp = () => {
             <h4 className='p-2'>Create your account</h4>
 
             <p>
-              Already have an account, <a href=''>Sign In</a>
+              Already have an account,
+              <Link to='signin'>
+                <a>Sign Up</a>
+              </Link>
             </p>
           </section>
 
