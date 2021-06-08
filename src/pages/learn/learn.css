@@ -1,6 +1,16 @@
+a {
+  text-decoration: none;
+  color: gray;
+}
+
 .learnContainer {
   max-width: 1100px;
   margin: auto;
-  overflow: auto;
   width: 100%;
+}
+
+.courseCard {
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
 }

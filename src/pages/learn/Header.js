@@ -3,7 +3,7 @@ import React from "react";
 
 const Header = () => {
   return (
-    <nav className='navbar navbar-expand-lg navbar-light'>
+    <nav className='navbar navbar-expand-lg navbar-light border-bottom'>
       <div
         className='container fluid'
         style={{ maxWidth: "1100px", padding: "0" }}
