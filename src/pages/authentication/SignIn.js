@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import "./authentication.css";
 import firebase from "firebase/app";
 import "firebase/auth";
@@ -10,8 +10,10 @@ const SignIn = () => {
   const [password, setPassword] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
   const context = useContext(UserContext);
+  const history = useHistory();
 
-  const handleSignIn = () => {
+  const handleSignIn = (e) => {
+    e.preventDefault();
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
@@ -22,6 +24,7 @@ const SignIn = () => {
           uid: res.user.uid,
           isAdmin: isAdmin,
         });
+        isAdmin ? history.push("/admin") : history.push("/learn");
       })
       .catch((err) => {
         console.log(err);

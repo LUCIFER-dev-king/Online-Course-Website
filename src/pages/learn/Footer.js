@@ -3,13 +3,12 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <div className='p-3 border-top' style={{ overflow: "hidden" }}>
-      <div className='learnContainer d-flex justify-content-center'>
-        <h6 className='p-2'>Terms & Conditions</h6>
-        <h6 className='p-2'>Terms & Conditions</h6>
-        <h6 className='p-2'>Terms & Conditions</h6>
+    <footer className='page-footer border-top fixed-bottom'>
+      <div className='footer-copyright text-center py-3'>
+        © 2020 Copyright:
+        <a href='/learn'> E-learn.com</a>
       </div>
-    </div>
+    </footer>
   );
 };
 

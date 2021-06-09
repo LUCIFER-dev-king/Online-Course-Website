@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import firebase from "firebase/app";
 import "firebase/auth";
 import { UserContext } from "../../context/Context";
@@ -10,6 +10,7 @@ const SignUp = () => {
   const [name, setName] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
   const context = useContext(UserContext);
+  const history = useHistory();
 
   const handleSignUpSubmit = (event) => {
     event.preventDefault();
@@ -27,6 +28,7 @@ const SignUp = () => {
             name: name,
             isAdmin: isAdmin,
           });
+          isAdmin ? history.push("/admin") : history.push("/");
         })
         .catch((err) => {
           console.log("Error:", err);

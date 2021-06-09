@@ -1,0 +1,17 @@
+.normalCard {
+  transition: transform 0.2s linear;
+  overflow: hidden;
+}
+
+img {
+  transition: transform 0.2s linear;
+}
+
+img.hover-zoom:hover {
+  transform: scale(1.1);
+  transition: all 0.2s linear;
+}
+
+.courseListItem:hover {
+  background-color: azure;
+}
