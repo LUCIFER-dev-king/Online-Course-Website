@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import CourseDesc from "./pages/learn/CourseDesc";
 import Learn from "./pages/learn/Learn";
 import ViewAll from "./pages/learn/ViewAll";
+import VideoPalyer from "./pages/videoplayer/VideoPalyer";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route exact path='/learn' component={Learn} />
           <Route exact path='/learn/viewall' component={ViewAll} />
           <Route exact path='/coursedesc' component={CourseDesc} />
+          <Route exact path='/coursevideo' component={VideoPalyer} />
         </Switch>
       </Router>
     </div>
