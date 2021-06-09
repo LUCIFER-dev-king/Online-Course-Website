@@ -1,7 +1,40 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
+import firebase from "firebase/app";
+import "firebase/auth";
+import { UserContext } from "../../context/Context";
 
 const SignUp = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
+  const context = useContext(UserContext);
+
+  const handleSignUpSubmit = (event) => {
+    event.preventDefault();
+    if (email && password && name) {
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then((res) => {
+          res.user.updateProfile({
+            displayName: name,
+          });
+          context.setUser({
+            email: res.user.email,
+            uid: res.user.uid,
+            name: name,
+            isAdmin: isAdmin,
+          });
+        })
+        .catch((err) => {
+          console.log("Error:", err);
+          //toast(err.message, { type: "error" });
+        });
+    }
+  };
+
   return (
     <div className='container fluid'>
       <div className='explore'>Explore</div>
@@ -22,6 +55,17 @@ const SignUp = () => {
 
           <section className='p-4'>
             <form action=''>
+              <label className='p-1' htmlFor='name'>
+                Name
+              </label>
+              <input
+                type='text'
+                name='name'
+                id='name'
+                className='form-control p-2'
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
               <label className='p-1' htmlFor='email'>
                 Email
               </label>
@@ -30,6 +74,8 @@ const SignUp = () => {
                 name='email'
                 id='email'
                 className='form-control p-2'
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
               <label className='p-1 mt-2' htmlFor='password'>
                 Password
@@ -39,10 +85,24 @@ const SignUp = () => {
                 name='password'
                 id='password'
                 className='form-control p-2'
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
+              {/*TODO: value for checkbox is not added */}
+              <input
+                type='checkbox'
+                className='form-checkbox-input'
+                value={isAdmin}
+                onChange={(e) => setIsAdmin((prev) => !prev)}
+                id='checkBox'
+              />
+              <label htmlFor='checkBox' className='form-check-box px-2 pt-2'>
+                Are your admin?
+              </label>
               <button
                 type='button'
                 className='btn btn-secondary w-100 rounded mt-3'
+                onClick={handleSignUpSubmit}
               >
                 Sign Up
               </button>

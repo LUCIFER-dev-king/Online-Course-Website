@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
@@ -26,7 +27,7 @@ const Header = () => {
             </li>
             <li className='nav-item '>
               <button type='button' className='btn btn-outline-primary'>
-                Loing/Register
+                <Link to='/signin'>Log In/Register</Link>
               </button>
             </li>
           </ul>
