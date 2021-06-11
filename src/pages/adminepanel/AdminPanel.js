@@ -70,11 +70,12 @@ const AdminPanel = () => {
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
-    //createCourse(courseName, courseDesc, coursePrice);
-    await db.collection("videos").document(videoName).setData({
-      finishedProcessing: false,
-      videoName: videoName,
-    });
+    console.log("dsf");
+    createCourse(courseName, courseDesc, coursePrice, videoName, sectionName);
+    // await db.collection("videos").document(videoName).setData({
+    //   finishedProcessing: false,
+    //   videoName: videoName,
+    // });
   };
 
   useEffect(() => {
@@ -175,6 +176,7 @@ const AdminPanel = () => {
                   onChange={(e) => videoUpload(e)}
                 />
                 <button
+                  onClick={handleOnSubmit}
                   type='button'
                   className='btn btn-secondary w-100 rounded mt-3'
                 >

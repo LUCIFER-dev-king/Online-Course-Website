@@ -12,7 +12,7 @@ import VideoPalyer from "./pages/videoplayer/VideoPalyer";
 import firebase from "firebase/app";
 import firebaseConfig from "./config/firebaseconfig";
 import { UserContext } from "./context/Context";
-firebase.initializeApp(firebaseConfig);
+// firebase.initializeApp(firebaseConfig);
 
 function App() {
   const [user, setUser] = useState(null);
