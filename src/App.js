@@ -26,8 +26,12 @@ function App() {
             <Route exact path='/signup' component={SignUp} />
             <Route exact path='/learn' component={Learn} />
             <Route exact path='/learn/viewall' component={ViewAll} />
-            <Route exact path='/coursedesc' component={CourseDesc} />
-            <Route exact path='/coursevideo' component={VideoPalyer} />
+            <Route exact path='/learn/:courseName' component={CourseDesc} />
+            <Route
+              exact
+              path='/learn/:courseName/syllabus'
+              component={VideoPalyer}
+            />
             <Route exact path='/admin' component={AdminPanel} />
           </Switch>
         </UserContext.Provider>

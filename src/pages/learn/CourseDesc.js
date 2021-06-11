@@ -1,8 +1,46 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import "./learn.css";
 import { FaUser } from "react-icons/fa";
+import { Link, useLocation, useHistory } from "react-router-dom";
+import firebase from "firebase/app";
+import "firebase/firestore";
+
 const CourseDesc = () => {
+  const db = firebase.firestore();
+  const location = useLocation();
+  const history = useHistory();
+  const [syllabusList, setSyllabusList] = useState([]);
+  const { courseName, courseDesc, coursePrice, id } = location.state.course;
+
+  const getSyllabus = (id) => {
+    var list = [];
+    db.collection("courses")
+      .doc(id)
+      .collection("videos")
+      .get()
+      .then((snap) => {
+        snap.forEach((doc) => {
+          var addId = { ...doc.data(), sectionName: doc.id };
+          list.push(addId);
+        });
+        setSyllabusList(list);
+      });
+  };
+
+  useEffect(() => {
+    getSyllabus(id);
+  }, []);
+
+  const sendToCourseVideoPlayer = () => {
+    history.push({
+      pathname: `/learn/${courseName}/syllabus`,
+      state: {
+        course: location.state.course,
+        syllabus: syllabusList,
+      },
+    });
+  };
   return (
     <div>
       <Header />
@@ -20,13 +58,10 @@ const CourseDesc = () => {
         <div className='row'>
           <div className='col-md-8'>
             <div className='course-header'>
-              <h2>Course Name</h2>
+              <h2>{courseName}</h2>
             </div>
             <div className='course-desc'>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis,
-                porro?
-              </p>
+              <p>{courseDesc}</p>
             </div>
             <div className='course-syllabus mt-4'>
               <h3>Syllabus</h3>
@@ -106,12 +141,17 @@ const CourseDesc = () => {
                 alt='courseImg'
               ></img>
               <div className='card-body'>
-                <h5 className='card-title'>Lorem ipsum dolor sit amet.</h5>
-                <p className='card-text'>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Maiores, ab?
-                </p>
-                <p>150</p>
+                <h5 className='card-title'>{courseName}</h5>
+                <p className='card-text'>{courseDesc}</p>
+                <p>{coursePrice}</p>
+                <button
+                  type='button'
+                  style={{ width: "100%" }}
+                  className='btn btn-primary btn-block'
+                  onClick={sendToCourseVideoPlayer}
+                >
+                  Enroll Now
+                </button>
               </div>
             </div>
           </div>

@@ -17,7 +17,8 @@ const Learn = () => {
       .get()
       .then((snap) => {
         snap.forEach((doc) => {
-          list.push(doc.data());
+          var addId = { ...doc.data(), id: doc.id };
+          list.push(addId);
         });
         setCourseList(list);
       });
@@ -48,14 +49,7 @@ const Learn = () => {
           </div>
           <div id='card' className='d-flex'>
             {courseList.map((course, id) => {
-              return (
-                <NormalCard
-                  key={id}
-                  title={course.courseName}
-                  desc={course.courseDesc}
-                  price={course.coursePrice}
-                ></NormalCard>
-              );
+              return <NormalCard key={id} course={course}></NormalCard>;
             })}
           </div>
         </section>

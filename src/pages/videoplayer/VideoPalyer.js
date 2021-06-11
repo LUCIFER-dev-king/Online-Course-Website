@@ -1,9 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaArrowLeft, FaUser } from "react-icons/fa";
 import "./videoplayer.css";
 import ReactPlayer from "react-player/lazy";
+import { useLocation } from "react-router-dom";
 
 const VideoPalyer = () => {
+  const [videosUrl, setVideosUrl] = useState("");
+  const location = useLocation();
+  const { courseName, courseDesc, coursePrice, id } = location.state.course;
+  console.log(location.state.syllabus);
+  const changeThePalyingVideo = (url) => {
+    console.log(url);
+    setVideosUrl(url);
+  };
+
   return (
     <div id='courseVideo' style={{ overflow: "hidden" }}>
       <div className='row'>
@@ -17,11 +27,7 @@ const VideoPalyer = () => {
             </div>
           </div>
           <section className='video-player'>
-            <ReactPlayer
-              width='100%'
-              height='500px'
-              url='https://youtu.be/fYWeOlb5c8g'
-            />
+            <ReactPlayer width='100%' height='500px' controls url={videosUrl} />
           </section>
           <div className='row'>
             <div className='col-md-8'>
@@ -128,6 +134,21 @@ const VideoPalyer = () => {
         </section>
         <section className='col-md-4'>
           <h2>Syllabus</h2>
+          {location.state.syllabus.map((sec, id) => (
+            <div>
+              <h4>{sec.id}</h4>
+              <p>{sec.videoName}</p>
+              <button
+                onClick={() => {
+                  changeThePalyingVideo(sec.videoUrl);
+                }}
+                type='button'
+                className='btn btn-primary btn-block'
+              >
+                Play
+              </button>
+            </div>
+          ))}
         </section>
       </div>
     </div>

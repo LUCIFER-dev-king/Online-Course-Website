@@ -1,9 +1,24 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import "./component.css";
 
-const NormalCard = ({ title, price, desc }) => {
+const NormalCard = ({ course }) => {
+  let history = useHistory();
+  const { courseName, coursePrice, courseDesc } = course;
+  const sendToCourseDesc = () => {
+    history.push({
+      pathname: `/learn/${courseName}`,
+      state: {
+        course: course,
+      },
+    });
+  };
   return (
-    <div className='card m-2' style={{ width: "18rem" }}>
+    <div
+      onClick={sendToCourseDesc}
+      className='card m-2'
+      style={{ width: "18rem", cursor: "pointer" }}
+    >
       <div className='normalCard'>
         <img
           className='card-img-top hover-zoom'
@@ -13,9 +28,9 @@ const NormalCard = ({ title, price, desc }) => {
       </div>
 
       <div className='card-body'>
-        <h5 className='card-title'>{title}</h5>
-        <p className='card-text'>{desc}</p>
-        <p>{price}</p>
+        <h5 className='card-title'>{courseName}</h5>
+        <p className='card-text'>{courseDesc}</p>
+        <p>{coursePrice}</p>
       </div>
     </div>
   );

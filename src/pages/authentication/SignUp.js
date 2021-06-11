@@ -39,7 +39,9 @@ const SignUp = () => {
 
   return (
     <div className='container fluid'>
-      <div className='explore'>Explore</div>
+      <div className='explore'>
+        <Link to='/learn'>Explore</Link>
+      </div>
       <div className='row'>
         <div className='col-md-4 offset-md-4 mt-5'>
           <section className='text-center'>
