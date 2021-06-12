@@ -27,7 +27,14 @@ const VideoPalyer = () => {
             </div>
           </div>
           <section className='video-player'>
-            <ReactPlayer width='100%' height='500px' controls url={videosUrl} />
+            <ReactPlayer
+              config={{ file: { attributes: { controlsList: "nodownload" } } }}
+              onContextMenu={(e) => e.preventDefault()}
+              width='100%'
+              height='500px'
+              controls
+              url={videosUrl}
+            />
           </section>
           <div className='row'>
             <div className='col-md-8'>
