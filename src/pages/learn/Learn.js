@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import NormalCard from "../../component/NormalCard";
 import { Link } from "react-router-dom";
 import Footer from "./Footer";
@@ -6,26 +6,33 @@ import Header from "./Header";
 import firebase from "firebase/app";
 import "firebase/firestore";
 import "./learn.css";
+import { getCourses } from "./helper/LearnHelper";
+import {
+  SET_COURSE,
+  SET_LOADING,
+} from "../../context/coursecontext/actions.types";
+import { CourseContext } from "../../context/coursecontext/CouseContext";
 
 const Learn = () => {
-  const db = firebase.firestore();
-  const [courseList, setCourseList] = useState([]);
-
-  const getCourses = () => {
-    var list = [];
-    db.collection("courses")
-      .get()
-      .then((snap) => {
-        snap.forEach((doc) => {
-          var addId = { ...doc.data(), id: doc.id };
-          list.push(addId);
-        });
-        setCourseList(list);
-      });
-  };
+  const { state, dispatch } = useContext(CourseContext);
+  const { courses } = state;
 
   useEffect(() => {
-    getCourses();
+    dispatch({
+      type: SET_LOADING,
+      payload: true,
+    });
+    getCourses(true).then((res) => {
+      dispatch({
+        type: SET_COURSE,
+        payload: res,
+      });
+    });
+
+    dispatch({
+      type: SET_LOADING,
+      payload: false,
+    });
   }, []);
 
   return (
@@ -48,7 +55,7 @@ const Learn = () => {
             <Link to='/learn/viewall'>View all</Link>
           </div>
           <div id='card' className='d-flex'>
-            {courseList.map((course, id) => {
+            {courses.map((course, id) => {
               return <NormalCard key={id} course={course}></NormalCard>;
             })}
           </div>
