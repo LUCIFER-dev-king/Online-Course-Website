@@ -14,6 +14,7 @@ import firebaseConfig from "./config/firebaseconfig";
 import { UserContext } from "./context/Context";
 import { CourseContext } from "./context/coursecontext/CouseContext";
 import reducer from "./context/coursecontext/reducer";
+import Order from "./pages/order/Order";
 // firebase.initializeApp(firebaseConfig);
 
 function App() {
@@ -36,6 +37,11 @@ function App() {
               <Route exact path='/learn' component={Learn} />
               <Route exact path='/learn/viewall' component={ViewAll} />
               <Route exact path='/learn/:courseName' component={CourseDesc} />
+              <Route
+                exact
+                path='/learn/:courseName/payment'
+                component={Order}
+              />
               <Route
                 exact
                 path='/learn/:courseName/syllabus'

@@ -9,8 +9,16 @@ const CourseInfo = ({ course, syllabus, fromVideoPlayer }) => {
   const infoClassName = fromVideoPlayer ? "col-md-8" : "col-md-12";
 
   const sendToCourseVideoPlayer = () => {
+    // history.push({
+    //   pathname: `/learn/${courseName}/syllabus`,
+    //   state: {
+    //     course: course,
+    //     syllabus: syllabus,
+    //   },
+    // });
+
     history.push({
-      pathname: `/learn/${courseName}/syllabus`,
+      pathname: `/learn/${courseName}/payment`,
       state: {
         course: course,
         syllabus: syllabus,
@@ -77,12 +85,9 @@ const CourseInfo = ({ course, syllabus, fromVideoPlayer }) => {
               alt='courseImg'
             ></img>
             <div className='card-body'>
-              <h5 className='card-title'>Lorem ipsum dolor sit amet.</h5>
-              <p className='card-text'>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Maiores, ab?
-              </p>
-              <p>150</p>
+              <h5 className='card-title'>{courseName}</h5>
+              <p className='card-text'>{courseDesc}</p>
+              <p>{coursePrice}</p>
               <button
                 type='button'
                 style={{ width: "100%" }}
