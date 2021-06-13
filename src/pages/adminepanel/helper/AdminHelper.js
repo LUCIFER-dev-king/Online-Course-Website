@@ -33,10 +33,11 @@ export const createCourse = (
   courseTagLine,
   authorDesc,
   authorName,
-  downloadUrl,
-  profilePicName
+  profilePicUrl,
+  courseDiscount,
+  thumbnailUrl
 ) => {
-  var docId = "6f651395-329e-489c-ba69-becbcb092bba";
+  var docId = v4();
   db.collection("courses")
     .doc(docId)
     .set({
@@ -46,8 +47,9 @@ export const createCourse = (
       courseTagLine: courseTagLine,
       authorDesc: authorDesc,
       authorName: authorName,
-      downloadUrl: downloadUrl,
-      profilePicName: profilePicName,
+      profilePicUrl: profilePicUrl,
+      courseDiscount: courseDiscount,
+      thumbnailUrl: thumbnailUrl,
     })
     .then((doc) => {
       console.log("Course saved", doc);

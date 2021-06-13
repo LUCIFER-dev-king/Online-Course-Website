@@ -18,7 +18,7 @@ const AdminPanel = () => {
   const db = firebase.firestore();
   const [authorName, setAuthorName] = useState("");
   const [authorDesc, setAuthorDesc] = useState("");
-  const [profilePicName, setProfilePicName] = useState("");
+  const [profilePicUrl, setProfilePicUrl] = useState(null);
   const [courseName, setCourseName] = useState("");
   const [courseDesc, setCourseDesc] = useState("");
   const [coursePrice, setCoursePrice] = useState("");
@@ -26,7 +26,9 @@ const AdminPanel = () => {
   const [courseDiscount, setCourseDiscount] = useState("");
   const [sectionName, setSectionName] = useState("");
   const [downloadUrl, setDownloadUrl] = useState(null);
+  const [thumbnailUrl, setThumbnailUrl] = useState(null);
   const [isImageUploading, setIsImageUploading] = useState(false);
+  const [isThumbnailUploading, setIsThumbnailUploading] = useState(false);
   const [isVideoUploading, setIsVideoUploading] = useState("");
   const [videoName, setVideoName] = useState("");
   const context = useContext(UserContext);
@@ -89,16 +91,15 @@ const AdminPanel = () => {
       courseTagLine,
       authorDesc,
       authorName,
-      downloadUrl,
-      profilePicName,
-      courseDiscount
+      profilePicUrl,
+      courseDiscount,
+      thumbnailUrl
     );
   };
 
-  const imagePicker = async (e) => {
+  const profilePicker = async (e) => {
     try {
       const file = e.target.files[0];
-      setProfilePicName(file.name);
       var metadata = {
         contentType: file.type,
       };
@@ -108,7 +109,7 @@ const AdminPanel = () => {
       const storageRef = await firebase.storage().ref();
 
       var uploadTask = storageRef
-        .child("AuthorImages/" + authorName)
+        .child("AuthorImages/" + file.name)
         .put(resizeImage, metadata);
 
       uploadTask.on(
@@ -140,8 +141,63 @@ const AdminPanel = () => {
           uploadTask.snapshot.ref
             .getDownloadURL()
             .then((url) => {
-              setDownloadUrl(url);
+              setProfilePicUrl(url);
               console.log(downloadUrl);
+            })
+            .catch((err) => console.log(err));
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const thumbnailPicker = async (e) => {
+    try {
+      const file = e.target.files[0];
+      var metadata = {
+        contentType: file.type,
+      };
+
+      let resizeImage = await readAndCompressImage(file, imageConfig);
+
+      const storageRef = await firebase.storage().ref();
+
+      var uploadTask = storageRef
+        .child("CourseThumbnails/" + courseName)
+        .put(resizeImage, metadata);
+
+      uploadTask.on(
+        firebase.storage.TaskEvent.STATE_CHANGED,
+        (snapshot) => {
+          setIsThumbnailUploading(true);
+          var progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+
+          switch (snapshot.state) {
+            case firebase.storage.TaskState.PAUSED:
+              setIsThumbnailUploading(false);
+              console.log("Uploading is false");
+              break;
+            case firebase.storage.TaskState.RUNNING:
+              console.log("Uploading is in prgress");
+              break;
+          }
+
+          if (progress == 100) {
+            setIsThumbnailUploading(false);
+            console.log("Uploading is finished");
+          }
+        },
+        (error) => {
+          console.log("Something went wrong: ", error);
+        },
+        () => {
+          uploadTask.snapshot.ref
+            .getDownloadURL()
+            .then((url) => {
+              setThumbnailUrl(url);
+              console.log(url);
             })
             .catch((err) => console.log(err));
         }
@@ -173,11 +229,11 @@ const AdminPanel = () => {
                     <div className='spinner-border' role='status'></div>
                   ) : (
                     <div className='text-center'>
-                      <label htmlFor='imagepicker' className='form-label'>
+                      <label htmlFor='profilePicker' className='form-label'>
                         <img
                           src={
-                            downloadUrl !== null
-                              ? downloadUrl
+                            profilePicUrl !== null
+                              ? profilePicUrl
                               : ProfilePlaceholder
                           }
                           alt='img'
@@ -192,10 +248,10 @@ const AdminPanel = () => {
                       <input
                         type='file'
                         name='image'
-                        id='imagepicker'
+                        id='profilePicker'
                         accept='image/*'
                         multiple={false}
-                        onChange={(e) => imagePicker(e)}
+                        onChange={(e) => profilePicker(e)}
                         className='form-control'
                       />
                     </div>
@@ -255,6 +311,26 @@ const AdminPanel = () => {
                   className='form-control p-2'
                   value={courseDiscount}
                   onChange={(e) => setCourseDiscount(e.target.value)}
+                />
+                {isThumbnailUploading ? (
+                  <div className='spinner-border m-3' role='status'></div>
+                ) : (
+                  <label
+                    className='p-1 mt-2'
+                    htmlFor='formfile'
+                    className='form-label'
+                  >
+                    Pick your course thumbnail
+                  </label>
+                )}
+                <input
+                  type='file'
+                  name='image'
+                  id='profilePicker'
+                  accept='image/*'
+                  multiple={false}
+                  onChange={(e) => thumbnailPicker(e)}
+                  className='form-control'
                 />
                 <label className='p-1 mt-2' htmlFor='courseTagLine'>
                   Course tag line
@@ -327,7 +403,11 @@ const AdminPanel = () => {
                 <button
                   onClick={handleOnSubmit}
                   type='button'
-                  className='btn btn-secondary w-100 rounded mt-3'
+                  className={
+                    isVideoUploading || isImageUploading || isThumbnailUploading
+                      ? "btn btn-secondary w-100 mt-3 disabled"
+                      : "btn btn-secondary w-100 mt-3"
+                  }
                 >
                   Submit
                 </button>
