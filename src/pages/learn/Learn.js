@@ -12,8 +12,10 @@ import {
   SET_LOADING,
 } from "../../context/coursecontext/actions.types";
 import { CourseContext } from "../../context/coursecontext/CouseContext";
+import { UserContext } from "../../context/Context";
 
 const Learn = () => {
+  const context = useContext(UserContext);
   const { state, dispatch } = useContext(CourseContext);
   const { courses } = state;
 
@@ -44,7 +46,11 @@ const Learn = () => {
         style={{ height: "150px" }}
       >
         <div className='learnContainer'>
-          <h2>Welcome to E-Learing Online</h2>
+          {context.user === null ? (
+            <h2>Welcome to E-Learing Online</h2>
+          ) : (
+            <h2>Welcome to {context.user?.name}</h2>
+          )}
         </div>
       </div>
 
@@ -84,7 +90,7 @@ const Learn = () => {
             <div className='card m-2' style={{ width: "18rem" }}>
               <img
                 className='card-img-top img-fluid'
-                src='https://source.unsplash.com/random'
+                src='https://source.unsplash.com/random/800x600'
                 alt='courseImg'
               ></img>
               <div className='card-body'>

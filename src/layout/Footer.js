@@ -3,8 +3,8 @@ import React from "react";
 const Footer = () => {
   return (
     <section id='footer'>
-      <div className='row bg-dark text-light p-5 vw-100'>
-        <div className='col-sm-4'>
+      <div className='row bg-dark text-light p-5'>
+        <div className='col-md-4'>
           <h1>E-LEARN</h1>
           <p>
             Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iste
@@ -12,11 +12,17 @@ const Footer = () => {
             Laudantium, nemo.
           </p>
         </div>
-        <div className='col-sm-4'>
+        <div className='col-md-4'>
           <h2>Explore</h2>
+          <p>Lorem ipsum dolor sit amet.</p>
+          <p>Lorem ipsum dolor sit amet.</p>
+          <p>Lorem ipsum dolor sit amet.</p>
         </div>
-        <div className='col-sm-4'>
+        <div className='col-md-4'>
           <h2>Reach Us</h2>
+          <p>Lorem ipsum dolor sit amet.</p>
+          <p>Lorem ipsum dolor sit amet.</p>
+          <p>Lorem ipsum dolor sit amet.</p>
         </div>
       </div>
     </section>

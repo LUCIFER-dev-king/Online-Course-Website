@@ -28,6 +28,12 @@ const SignUp = () => {
             name: name,
             isAdmin: isAdmin,
           });
+          var user = {
+            email: res.user.email,
+            uid: res.user.uid,
+            isAdmin: isAdmin,
+          };
+          localStorage.setItem("user", JSON.stringify(user));
           isAdmin ? history.push("/admin") : history.push("/");
         })
         .catch((err) => {
@@ -115,7 +121,6 @@ const SignUp = () => {
               <a href=''>Forgot password?</a>
             </p>
           </section>
-          <p className='text-center'>or</p>
         </div>
       </div>
     </div>

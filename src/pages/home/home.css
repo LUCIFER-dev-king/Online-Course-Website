@@ -1,0 +1,9 @@
+@media screen and (max-width: 768px) {
+  #heroSection .hero {
+    background: url("../../images/hero1.jpg") no-repeat center/cover;
+    color: white;
+  }
+  #heroSection .heroImage {
+    display: none;
+  }
+}

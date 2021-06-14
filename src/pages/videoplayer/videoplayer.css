@@ -11,6 +11,11 @@
 
 #videoSection {
   position: relative;
+  border-bottom: 1px solid green;
+}
+
+.tabSection {
+  display: none;
 }
 
 #videoSection .video-player {
@@ -37,4 +42,22 @@
   background-color: #484a4d;
   color: white;
   cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+  .about {
+    display: none;
+  }
+  .syllabusSection {
+    display: none;
+  }
+  .tabSection {
+    display: block;
+  }
+  .back-iconName {
+    margin-left: 15px;
+  }
+  #syllabusSection {
+    display: none;
+  }
 }

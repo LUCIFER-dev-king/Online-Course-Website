@@ -16,7 +16,8 @@ const ViewAll = () => {
       .get()
       .then((snap) => {
         snap.forEach((doc) => {
-          list.push(doc.data());
+          var addId = { ...doc.data(), id: doc.id };
+          list.push(addId);
         });
         setCourseList(list);
       });
@@ -40,14 +41,7 @@ const ViewAll = () => {
           <h3>Courses</h3>
           <div id='couseList' className='m-1'>
             {courseList.map((course, id) => {
-              return (
-                <ExpandedCard
-                  key={id}
-                  title={course.courseName}
-                  desc={course.courseDesc}
-                  price={course.coursePrice}
-                ></ExpandedCard>
-              );
+              return <ExpandedCard key={id} courses={course}></ExpandedCard>;
             })}
           </div>
         </section>

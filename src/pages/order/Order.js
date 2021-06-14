@@ -2,7 +2,24 @@ import React from "react";
 import Header from "../learn/Header";
 import "./order.css";
 import "../learn/learn.css";
+import { useLocation } from "react-router-dom";
 const Order = () => {
+  const location = useLocation();
+  const {
+    courseName,
+    courseDesc,
+    coursePrice,
+    id,
+    courseTagLine,
+    courseDiscount,
+    authorName,
+    profilePicUrl,
+    thumbnailUrl,
+    authorDesc,
+  } = location.state.course;
+  var totalPrice = Math.floor(
+    coursePrice - (coursePrice * courseDiscount) / 100
+  );
   return (
     <div>
       <Header />
@@ -14,7 +31,7 @@ const Order = () => {
               <div
                 className='col-3'
                 style={{
-                  background: `url(https://source.unsplash.com/random)`,
+                  background: `url(${thumbnailUrl})`,
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                   backgroundRepeat: "no-repeat",
@@ -24,9 +41,9 @@ const Order = () => {
 
               <div className='col-6'>
                 <div className='courseItemCount'>
-                  <h5>sdf</h5>
-                  <p>desc</p>
-                  <p>desc</p>
+                  <h5>{courseName}</h5>
+                  <p>{courseTagLine}</p>
+                  <p>{courseDesc}</p>
                 </div>
               </div>
             </div>
@@ -43,11 +60,11 @@ const Order = () => {
                 <h5>Order Details</h5>
                 <div className='d-flex justify-content-between'>
                   <p>Course Price</p>
-                  <p>2323</p>
+                  <p>{coursePrice}</p>
                 </div>
                 <div className='d-flex justify-content-between'>
                   <p>Discount</p>
-                  <p>-556</p>
+                  <p>{courseDiscount}%</p>
                 </div>
                 <div className='d-flex justify-content-between'>
                   <p>Coupon</p>
@@ -56,7 +73,7 @@ const Order = () => {
                 <hr />
                 <div className='d-flex justify-content-between'>
                   <h5>Total</h5>
-                  <h6>1256</h6>
+                  <h6>{totalPrice}</h6>
                 </div>
               </div>
             </div>

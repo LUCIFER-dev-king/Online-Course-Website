@@ -4,7 +4,9 @@ import "./component.css";
 
 const NormalCard = ({ course }) => {
   let history = useHistory();
-  const { courseName, coursePrice, courseDesc } = course;
+  var price;
+  const { courseName, coursePrice, courseDesc, thumbnailUrl, courseDiscount } =
+    course;
   const sendToCourseDesc = () => {
     history.push({
       pathname: `/learn/${courseName}`,
@@ -22,7 +24,7 @@ const NormalCard = ({ course }) => {
       <div className='normalCard'>
         <img
           className='card-img-top hover-zoom'
-          src='https://source.unsplash.com/random'
+          src={thumbnailUrl}
           alt='courseImg'
         ></img>
       </div>
@@ -30,7 +32,17 @@ const NormalCard = ({ course }) => {
       <div className='card-body'>
         <h5 className='card-title'>{courseName}</h5>
         <p className='card-text'>{courseDesc}</p>
-        <p>{coursePrice}</p>
+        <div className='d-flex '>
+          <p className='px-1'>
+            <del>{coursePrice}</del>
+          </p>
+          <p className='px-2'>
+            {Math.floor(
+              (price = coursePrice - (coursePrice * courseDiscount) / 100)
+            )}
+          </p>
+          <p>{courseDiscount}% off</p>
+        </div>
       </div>
     </div>
   );

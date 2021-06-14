@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import AdminPanel from "./pages/adminepanel/AdminPanel";
 import SignIn from "./pages/authentication/SignIn";
 import SignUp from "./pages/authentication/SignUp";
-import Home from "./pages/Home";
+import Home from "./pages/home/Home";
 import CourseDesc from "./pages/learn/CourseDesc";
 import Learn from "./pages/learn/Learn";
 import ViewAll from "./pages/learn/ViewAll";
@@ -37,11 +37,7 @@ function App() {
               <Route exact path='/learn' component={Learn} />
               <Route exact path='/learn/viewall' component={ViewAll} />
               <Route exact path='/learn/:courseName' component={CourseDesc} />
-              <Route
-                exact
-                path='/learn/:courseName/payment'
-                component={Order}
-              />
+              <Route exact path='/learn/:courseName/order' component={Order} />
               <Route
                 exact
                 path='/learn/:courseName/syllabus'

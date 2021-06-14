@@ -31,11 +31,15 @@ const VideoPalyer = () => {
     <div id='courseVideo' style={{ overflow: "hidden" }}>
       <div className='row'>
         <section className='col-md-8' style={{ overflow: "scroll" }}>
-          <div className='row'>
+          <div className='row border-bottom'>
             <div className='col-1'>
-              <FaArrowLeft className='back-icon' onClick={goBack} />
+              <FaArrowLeft
+                className='back-icon'
+                onClick={goBack}
+                style={{ cursor: "pointer" }}
+              />
             </div>
-            <div className='col-6 mt-2 d-flex align-items-center'>
+            <div className='col-6 mt-2 d-flex align-items-center back-iconName'>
               <h4>{courseName}</h4>
             </div>
           </div>
@@ -59,7 +63,64 @@ const VideoPalyer = () => {
               />
             )}
           </section>
-          <div className='p-3'>
+          <section className='tabSection'>
+            <ul className='nav nav-tabs'>
+              <li className='nav-item'>
+                <button
+                  type='button'
+                  href='about-tab'
+                  data-bs-toggle='tab'
+                  data-bs-target='#aboutTab'
+                  role='tab'
+                  aria-labelledby='about'
+                  aria-controls='about'
+                  className='nav-link active'
+                >
+                  About
+                </button>
+              </li>
+              <li className='nav-item'>
+                <button
+                  type='button'
+                  href='about-tab'
+                  data-bs-toggle='tab'
+                  data-bs-target='#syllabusTab'
+                  role='tab'
+                  aria-labelledby='syllabusSection'
+                  aria-controls='syllabusSection'
+                  className='nav-link'
+                >
+                  Syllabus
+                </button>
+              </li>
+            </ul>
+            <div class='tab-content' id='myTabContent'>
+              <div
+                class='tab-pane fade show active p-3'
+                id='aboutTab'
+                role='tabpanel'
+                aria-labelledby='home-tab'
+              >
+                <CourseInfo
+                  course={location.state.course}
+                  syllabus={location.state.syllabus}
+                  fromVideoPlayer={false}
+                />
+              </div>
+              <div
+                class='tab-pane fade'
+                id='syllabusTab'
+                role='tabpanel'
+                aria-labelledby='profile-tab'
+              >
+                {location.state.syllabus.map((syllabus, id) => (
+                  <Accordian key={id} syllabus={syllabus}></Accordian>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <div id='about' className='about p-3'>
             <CourseInfo
               course={location.state.course}
               syllabus={location.state.syllabus}
@@ -67,7 +128,7 @@ const VideoPalyer = () => {
             />
           </div>
         </section>
-        <section className='col-md-4'>
+        <section id='syllabusSection' className='col-md-4'>
           <h2>Syllabus</h2>
           {location.state.syllabus.map((syllabus, id) => (
             <Accordian key={id} syllabus={syllabus}></Accordian>
