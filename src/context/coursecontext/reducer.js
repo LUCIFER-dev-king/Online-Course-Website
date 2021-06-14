@@ -1,4 +1,9 @@
-import { SET_LOADING, SET_COURSE, SET_VIDEOURL } from "./actions.types";
+import {
+  SET_LOADING,
+  SET_COURSE,
+  SET_VIDEOURL,
+  SET_USER_COURSE_LIST,
+} from "./actions.types";
 
 export default (state, action) => {
   switch (action.type) {
@@ -12,6 +17,11 @@ export default (state, action) => {
       return action.payload === null
         ? { ...state, videoUrl: "" }
         : { ...state, videoUrl: action.payload };
+
+    case SET_USER_COURSE_LIST:
+      return action.payload === null
+        ? { ...state, userCourseList: [] }
+        : { ...state, userCourseList: action.payload };
     default:
       return state;
   }

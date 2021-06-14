@@ -1,12 +1,38 @@
 import "./learn.css";
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
-import { UserContext } from "../../context/Context";
+import { Link, useHistory } from "react-router-dom";
+import { CourseContext } from "../../context/coursecontext/CouseContext";
+import { getEnrollments } from "./helper/LearnHelper";
+import { SET_USER_COURSE_LIST } from "../../context/coursecontext/actions.types";
 const Header = () => {
-  var user = localStorage.getItem("user");
+  var user = JSON.parse(localStorage.getItem("user"));
+  const { state, dispatch } = useContext(CourseContext);
+  const history = useHistory();
 
   const logout = () => {
     localStorage.setItem("user", "");
+  };
+
+  const getUserEnrollments = () => {
+    getEnrollments(user).then((res) => {
+      if (res) {
+        console.log(res);
+
+        dispatch({
+          type: SET_USER_COURSE_LIST,
+          payload: res,
+        });
+
+        setTimeout(() => {
+          history.push({
+            pathname: "/learn/viewall",
+            state: {
+              courseList: res,
+            },
+          });
+        }, 1500);
+      }
+    });
   };
   return (
     <nav className='navbar navbar-expand-lg navbar-light border-bottom'>
@@ -35,7 +61,11 @@ const Header = () => {
           {user ? (
             <ul className='navbar-nav '>
               <li className='nav-item px-2'>
-                <a href='/learn/viewall' className='text-dark'>
+                <a
+                  onClick={getUserEnrollments}
+                  className='text-dark'
+                  style={{ cursor: "pointer" }}
+                >
                   My Enrollments
                 </a>
               </li>

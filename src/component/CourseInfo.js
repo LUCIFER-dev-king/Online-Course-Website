@@ -26,7 +26,7 @@ const CourseInfo = ({ course, syllabus, fromVideoPlayer }) => {
     console.log(context.user?.uid);
     if (user) {
       history.push({
-        pathname: `/learn/:courseName/syllabus`,
+        pathname: `/learn/:courseName/order`,
         state: {
           course: course,
           syllabus: syllabus,
@@ -37,6 +37,7 @@ const CourseInfo = ({ course, syllabus, fromVideoPlayer }) => {
         pathname: `/learn/${courseName}/order`,
         state: {
           course: course,
+          syllabus: syllabus,
         },
       });
     }

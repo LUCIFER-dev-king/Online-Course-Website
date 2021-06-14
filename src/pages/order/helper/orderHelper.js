@@ -1,22 +1,27 @@
-const Razorpay = require("razorpay");
+import firebase from "firebase/app";
+import "firebase/firestore";
+import { v4 } from "uuid";
+const db = firebase.firestore();
 
-export const OrderHelper = async () => {
-  try {
-    const instance = new Razorpay({
-      key_id: "rzp_test_vnbvemEiwBGIeE",
-      key_secret: "HJDxQGcgPXPip7wuYrll1RFr",
+export const createPayment = () => {};
+
+export const createOrder = (id, user) => {
+  return db
+    .collection("orders")
+    .doc(user.uid)
+    .set({
+      email: user.email,
+      isAdmin: user.isAdmin,
+    })
+    .then((doc) => {
+      db.collection("orders")
+        .doc(user.uid)
+        .collection("courseList")
+        .doc(v4())
+        .set({
+          courseId: id,
+        });
+      console.log("Order saved");
+      return doc;
     });
-    const options = {
-      amount: 5000,
-      currency: "INR",
-      receipt: "receipt_order",
-    };
-    const order = await instance.orders.create(options);
-    if (!order) {
-      return "Error occured";
-    }
-    return order;
-  } catch (error) {
-    console.log("Error:", error);
-  }
 };

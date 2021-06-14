@@ -23,6 +23,7 @@ function App() {
     isLoading: false,
     courses: [],
     videoUrl: "",
+    userCourseList: [],
   };
   const [state, dispatch] = useReducer(reducer, initialState);
   return (

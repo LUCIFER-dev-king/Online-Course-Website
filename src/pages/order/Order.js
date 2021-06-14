@@ -2,9 +2,11 @@ import React from "react";
 import Header from "../learn/Header";
 import "./order.css";
 import "../learn/learn.css";
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
+import { createOrder } from "./helper/orderHelper";
 const Order = () => {
   const location = useLocation();
+  const history = useHistory();
   const {
     courseName,
     courseDesc,
@@ -20,6 +22,22 @@ const Order = () => {
   var totalPrice = Math.floor(
     coursePrice - (coursePrice * courseDiscount) / 100
   );
+
+  const makePayment = () => {
+    var user = JSON.parse(localStorage.getItem("user"));
+    createOrder(id, user).then((doc) => {
+      if (doc) {
+        console.log("saved");
+      }
+      history.push({
+        pathname: `/learn/:courseName/syllabus`,
+        state: {
+          course: location.state.course,
+          syllabus: location.state.syllabus,
+        },
+      });
+    });
+  };
   return (
     <div>
       <Header />
@@ -29,7 +47,7 @@ const Order = () => {
           <div className='col-md-7'>
             <div className='row p-2'>
               <div
-                className='col-3'
+                className='col-4'
                 style={{
                   background: `url(${thumbnailUrl})`,
                   backgroundSize: "cover",
@@ -52,7 +70,9 @@ const Order = () => {
 
             <h4>Payment</h4>
             <p>Make payment for the course here</p>
-            <button className='btn btn-primary'>Pay Securely</button>
+            <button onClick={makePayment} className='btn btn-primary'>
+              Pay Securely
+            </button>
           </div>
           <div className='col-md-5'>
             <div className='card'>

@@ -7,6 +7,7 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import Accordian from "../../component/Accordian";
 import CourseInfo from "../../component/CourseInfo";
+import { getSyllabus } from "./helper/LearnHelper";
 
 const CourseDesc = () => {
   const db = firebase.firestore();
@@ -15,23 +16,10 @@ const CourseDesc = () => {
   const [syllabusList, setSyllabusList] = useState([]);
   const { courseName, courseDesc, coursePrice, id } = location.state.course;
 
-  const getSyllabus = (id) => {
-    var list = [];
-    db.collection("courses")
-      .doc(id)
-      .collection("videos")
-      .get()
-      .then((snap) => {
-        snap.forEach((doc) => {
-          var addId = { ...doc.data(), sectionName: doc.id };
-          list.push(addId);
-        });
-        setSyllabusList(list);
-      });
-  };
-
   useEffect(() => {
-    getSyllabus(id);
+    getSyllabus(id).then((result) => {
+      setSyllabusList(result);
+    });
   }, []);
 
   return (
