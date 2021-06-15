@@ -10,11 +10,11 @@ const Header = () => {
   const history = useHistory();
 
   const logout = () => {
-    localStorage.setItem("user", "");
+    localStorage.removeItem("user");
   };
 
   const getUserEnrollments = () => {
-    getEnrollments(user).then((res) => {
+    getEnrollments(user.uid).then((res) => {
       if (res) {
         console.log(res);
 

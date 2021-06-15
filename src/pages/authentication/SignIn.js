@@ -4,6 +4,7 @@ import "./authentication.css";
 import firebase from "firebase/app";
 import "firebase/auth";
 import { UserContext } from "../../context/Context";
+import { getEnrollments } from "../learn/helper/LearnHelper";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -29,8 +30,11 @@ const SignIn = () => {
           uid: res.user.uid,
           isAdmin: isAdmin,
         };
+        getEnrollments(res.user.uid);
         localStorage.setItem("user", JSON.stringify(user));
-        isAdmin ? history.push("/admin") : history.push("/learn");
+        setTimeout(() => {
+          isAdmin ? history.push("/admin") : history.push("/learn");
+        }, 1500);
       })
       .catch((err) => {
         console.log(err);

@@ -6,7 +6,8 @@ import { UserContext } from "../context/Context";
 const CourseInfo = ({ course, syllabus, fromVideoPlayer }) => {
   const context = useContext(UserContext);
   const history = useHistory();
-  var user = localStorage.getItem("user");
+  var user = JSON.parse(localStorage.getItem("user"));
+  var enrollments = JSON.parse(localStorage.getItem("userEnrollments"));
   var price;
   const {
     courseName,
@@ -22,16 +23,27 @@ const CourseInfo = ({ course, syllabus, fromVideoPlayer }) => {
   } = course;
   const infoClassName = fromVideoPlayer ? "col-md-8" : "col-md-12";
 
+  var isUserEnrolled = enrollments.find((ele) => ele === id);
+
   const sendToCourseVideoPlayer = () => {
-    console.log(context.user?.uid);
     if (user) {
-      history.push({
-        pathname: `/learn/:courseName/order`,
-        state: {
-          course: course,
-          syllabus: syllabus,
-        },
-      });
+      if (isUserEnrolled !== undefined) {
+        history.push({
+          pathname: `/learn/:courseName/syllabus`,
+          state: {
+            course: course,
+            syllabus: syllabus,
+          },
+        });
+      } else {
+        history.push({
+          pathname: `/learn/:courseName/order`,
+          state: {
+            course: course,
+            syllabus: syllabus,
+          },
+        });
+      }
     } else {
       history.push({
         pathname: `/learn/${courseName}/order`,
@@ -157,7 +169,7 @@ const CourseInfo = ({ course, syllabus, fromVideoPlayer }) => {
                 className='btn btn-primary btn-block'
                 onClick={sendToCourseVideoPlayer}
               >
-                Enroll Now
+                {isUserEnrolled !== undefined ? "Start Now" : "Enroll Now"}
               </button>
             </div>
           </div>

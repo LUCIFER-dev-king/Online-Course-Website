@@ -44,21 +44,24 @@ const getListOfUserCourses = (id) => {
     });
 };
 
-export const getEnrollments = (user) => {
+export const getEnrollments = (id) => {
   const db = firebase.firestore();
   var list = [];
-
+  var courseIdList = [];
   return db
     .collection("orders")
-    .doc(user.uid)
+    .doc(id)
     .collection("courseList")
     .get()
     .then((snap) => {
       snap.forEach((doc) => {
+        courseIdList.push(doc.data().courseId);
         getListOfUserCourses(doc.data().courseId).then((result) => {
           list.push(result);
         });
       });
+
+      localStorage.setItem("userEnrollments", JSON.stringify(courseIdList));
       return list;
     });
 };
