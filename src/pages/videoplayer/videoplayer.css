@@ -9,16 +9,21 @@
   color: #fff;
 }
 
-#videoSection {
+#video-section {
+  width: 100%;
+}
+
+#syllabus-section {
+  width: 100%;
+  padding: 2rem;
+}
+
+#video {
   position: relative;
   border-bottom: 1px solid green;
 }
 
-.tabSection {
-  display: none;
-}
-
-#videoSection .video-player {
+#video .video-player {
   background: url("https://media.publit.io/file/w_300,h_200,c_fill/fil-TJ.jpg")
     no-repeat center center/cover;
   width: 100%;
@@ -44,20 +49,14 @@
   cursor: pointer;
 }
 
-@media screen and (max-width: 768px) {
-  .about {
-    display: none;
+@media screen and (min-width: 1024px) {
+  #video-section {
+    width: 70%;
   }
-  .syllabusSection {
-    display: none;
-  }
-  .tabSection {
-    display: block;
-  }
-  .back-iconName {
-    margin-left: 15px;
-  }
-  #syllabusSection {
-    display: none;
+
+  #syllabus-section {
+    width: 30%;
+    height: 100vh;
+    padding: 0;
   }
 }

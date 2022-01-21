@@ -1,69 +1,142 @@
-import React from "react";
-import { FaBars } from "react-icons/fa";
-import { Link } from "react-router-dom";
-import "./layout.css";
+import React, { useContext, useState } from "react";
+import { useHistory } from "react-router-dom";
+import { CourseContext } from "../context/coursecontext/CouseContext";
+import { getEnrollments } from "../pages/learn/helper/LearnHelper";
+import { SET_USER_COURSE_LIST } from "../context/coursecontext/actions.types";
+import { MdMenu } from "react-icons/md";
+import { FaBookOpen, FaSearch, FaShoppingCart } from "react-icons/fa";
+import { checkObjIsEmptyOrNot, ShortButton } from "../utils";
 
 const Header = () => {
   var user = JSON.parse(localStorage.getItem("user"));
+  const [searchText, setSearchText] = useState("");
+  const [searchResult, setSearchResult] = useState("");
+
+  const { state, dispatch } = useContext(CourseContext);
+  const history = useHistory();
+
+  const logout = () => {
+    localStorage.removeItem("user");
+  };
+
+  const getUserEnrollments = () => {
+    getEnrollments(user.uid).then((res) => {
+      if (res) {
+        console.log(res);
+
+        dispatch({
+          type: SET_USER_COURSE_LIST,
+          payload: res,
+        });
+
+        setTimeout(() => {
+          history.push({
+            pathname: "/learn/viewall",
+            state: {
+              courseList: res,
+            },
+          });
+        }, 1500);
+      }
+    });
+  };
+
+  const searchHandler = async (e) => {
+    e.preventDefault();
+    if (searchText !== "") {
+      // searchQuery(searchText).then((res) => {
+      //   setSearchResult(res);
+      // });
+    }
+  };
+
   return (
-    <nav className='navbar fixed-top navbar-expand-lg bg-dark'>
-      <div className='container fluid'>
-        <a href='#heroSection' className='navbar-brand'>
-          <h2>E-Learn</h2>
+    <nav className="navbar navbar-expand-lg navbar-light">
+      <div className="container">
+        <a className="navbar-brand fs-4 fw-bold" href="/learn">
+          E LEARN
         </a>
         <button
-          className='navbar-toggler text-light'
-          type='button'
-          data-bs-toggle='collapse'
-          data-bs-target='#navbar-1'
-          area-controls='navbar-1'
-          aria-expanded='false'
-          aria-label='Toggle navigation'
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
         >
-          <span className='text-light'>
-            <FaBars />
-          </span>
+          <MdMenu />
         </button>
         <div
-          className='collapse navbar-collapse justify-content-end'
-          id='navbar-1'
+          className="collapse navbar-collapse justify-content-center "
+          id="navbarNavDropdown"
         >
-          <ul className='navbar-nav'>
-            <li className='nav-item my-auto'>
-              <a className='nav-link' href='#heroSection'>
-                <h5 className='mr-3'>Home</h5>
-              </a>
-            </li>
-            <li className='nav-item my-auto'>
-              <a className='nav-link' href='#serviceSection'>
-                <h5>Service</h5>
-              </a>
-            </li>
-            <li className='nav-item my-auto'>
-              <a className='nav-link' href='#aboutUs'>
-                <h5>About us</h5>
-              </a>
-            </li>
-
-            <li className='nav-item my-auto'>
-              <a className='nav-link' href='#feautres'>
-                <h5>Courses</h5>
-              </a>
-            </li>
-            <li className='nav-item '>
-              <button type='button' className='btn btn-primary '>
-                {user ? (
-                  <Link to='/learn' className='text-light'>
-                    Let's Go
-                  </Link>
-                ) : (
-                  <Link to='/signin' className='text-light'>
-                    Login/Register
-                  </Link>
-                )}
-              </button>
-            </li>
-          </ul>
+          <div
+            id="searchContainer"
+            className="bg-light border border-dark w-50 p-2 ms-auto rounded"
+          >
+            <div className="d-flex ">
+              <input
+                style={{
+                  background: "none",
+                  outline: "none",
+                  border: "none",
+                }}
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+                type="text"
+                placeholder="Search"
+                color="#fff"
+                className="text-left ps-2 w-100 "
+              />
+              <div style={{ cursor: "pointer" }} className="h-100 my-auto pe-2">
+                <FaSearch onClick={searchHandler} />
+              </div>
+            </div>
+          </div>
+          <div className="mt-3 ms-auto mt-lg-0">
+            {user === null ? (
+              <div>
+                <a
+                  className="nav-item p-0 p-lg-2 text-decoration-none"
+                  href="/signin"
+                >
+                  <ShortButton buttonName={"SIGN IN"} />
+                </a>
+              </div>
+            ) : (
+              <div className="d-flex align-items-center">
+                <div
+                  style={{ cursor: "pointer" }}
+                  className="me-3"
+                  onClick={() => {
+                    {
+                      history.push("/enrollments");
+                    }
+                  }}
+                >
+                  <FaBookOpen className="fs-5" />
+                </div>
+                <div
+                  style={{ cursor: "pointer" }}
+                  className="me-2"
+                  onClick={() => {
+                    {
+                      history.push("/mycart");
+                    }
+                  }}
+                >
+                  <FaShoppingCart className="fs-5" />
+                </div>
+                <a
+                  className="nav-item p-0 p-lg-2 text-decoration-none"
+                  href="/signin"
+                >
+                  <ShortButton onClick={logout} buttonName={"LOG OUT"} />
+                </a>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </nav>

@@ -3,6 +3,7 @@ import {
   SET_COURSE,
   SET_VIDEOURL,
   SET_USER_COURSE_LIST,
+  SET_CURRENT_COURSE_VIEW,
 } from "./actions.types";
 
 export default (state, action) => {
@@ -22,6 +23,11 @@ export default (state, action) => {
       return action.payload === null
         ? { ...state, userCourseList: [] }
         : { ...state, userCourseList: action.payload };
+
+    case SET_CURRENT_COURSE_VIEW:
+      return action.payload === null
+        ? { ...state, currentCourseList: [] }
+        : { ...state, currentCourseList: action.payload };
     default:
       return state;
   }

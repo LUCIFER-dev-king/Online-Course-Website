@@ -1,70 +1,72 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { getSyllabus } from "../pages/learn/helper/LearnHelper";
+import { getSyllabus } from "../pages/courseDesc/helper/courseDescHelper";
+import { levelFinder } from "../utils";
+import ReviewStar from "./ReviewStar";
 
-const ExpandedCard = ({ courses, userCourses }) => {
+const ExpandedCard = ({ courses }) => {
+  var price;
   let history = useHistory();
   const {
     courseName,
     coursePrice,
-    courseDesc,
+    level,
+    rating,
     thumbnailUrl,
+    courseDiscount,
     courseTagLine,
-    id,
   } = courses;
 
-  const sendToCourseDesc = (id) => {
-    if (userCourses) {
-      getSyllabus(id).then((result) => {
-        history.push({
-          pathname: `/learn/${courseName}/syllabus`,
-          state: {
-            course: courses,
-            syllabus: result,
-          },
-        });
-      });
-    } else {
-      history.push({
-        pathname: `/learn/${courseName}/`,
-        state: {
-          course: courses,
-        },
-      });
-    }
+  const sendToCourseDesc = () => {
+    history.push({
+      pathname: `/learn/${courseName}/`,
+      state: {
+        course: courses,
+      },
+    });
   };
 
   return (
-    <div className='courseListItem p-2 border-top'>
-      <div
-        className='row py-2'
-        onClick={() => {
-          sendToCourseDesc(id);
-        }}
-        style={{ cursor: "pointer" }}
-      >
-        <div
-          className='col-sm-2 img-fluid'
+    <div
+      id="expanded-card"
+      className="d-md-flex mb-2 justify-content-between"
+      onClick={sendToCourseDesc}
+      style={{ cursor: "pointer" }}
+    >
+      <div className="d-md-flex justify-content-start">
+        <img
           style={{
-            background: `url(${thumbnailUrl})`,
+            width: "250px",
+            height: "150px",
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
           }}
-        ></div>
-
-        <div className='col-sm-7'>
-          <div className='courseItemCount'>
-            <h5>{courseName}</h5>
-            <p>{courseTagLine}</p>
-            <p>{courseDesc}</p>
+          src={thumbnailUrl}
+          alt={""}
+          className="bg-dark rounded me-3"
+        />
+        <div id="expanded-content-card" className="d-flex flex-column ms-2">
+          <h5 className="fw-bolder">{courseName}</h5>
+          <p>{courseTagLine}</p>
+          <p className="text-muted">Level: {levelFinder(level)}</p>
+          <div className="d-flex align-items-center">
+            <div style={{ color: "#e59819" }} className="fw-bolder mt-1">
+              {rating}
+            </div>
+            <div className="ms-2">
+              <ReviewStar starCount={rating} />
+            </div>
           </div>
         </div>
-        {!userCourses && (
-          <div className='col-sm-3' style={{ textAlign: "right" }}>
-            <h6 className=''>{coursePrice}</h6>
-          </div>
-        )}
+      </div>
+      <div className="ms-auto">
+        <p className="px-2 fw-bolder">
+          ₹
+          {Math.floor(
+            (price = coursePrice - (coursePrice * courseDiscount) / 100)
+          )}
+        </p>
       </div>
     </div>
   );

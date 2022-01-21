@@ -1,23 +1,25 @@
-import firebase from "firebase/app";
+import firebase from "firebase/compat/app";
 import "firebase/firestore";
-import firebaseConfig from "../../../config/firebaseconfig";
+import { db } from "../../../config/firebaseconfig";
 import { readAndCompressImage } from "browser-image-resizer";
 import { imageConfig } from "../../../config/imageConfig";
 import { v4 } from "uuid";
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
 
 const createVideoCollection = (docId, videoName, sectionName) => {
-  db.collection("courses")
-    .doc(docId)
-    .collection("videos")
-    .doc(sectionName)
+  var sectionId = v4();
+  var dbRef = db.collection("courses").doc(docId);
+
+  dbRef
+    .collection("sections")
+    .doc(sectionId)
     .set({
-      videoName: videoName,
-      finishedProcessing: false,
+      sectionName: sectionName,
     })
     .then(() => {
-      console.log("video saved");
+      dbRef.collection("sections").doc(sectionId).collection("videos").add({
+        videoName: videoName,
+        finishedProcessing: false,
+      });
     })
     .catch((err) => {
       console.log("Error occured", err);

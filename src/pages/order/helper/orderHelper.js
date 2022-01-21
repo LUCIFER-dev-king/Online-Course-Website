@@ -1,11 +1,26 @@
-import firebase from "firebase/app";
+import firebase from "firebase/compat/app";
 import "firebase/firestore";
 import { v4 } from "uuid";
-const db = firebase.firestore();
+import { db } from "../../../config/firebaseconfig";
 
 export const createPayment = () => {};
 
-export const createOrder = (id, user) => {
+export const createEnrollmentToUser = (courseIdList, user) => {
+  db.collection("users")
+    .doc(user.uid)
+    .set(
+      {
+        courseIdList: courseIdList,
+      },
+      { merge: true }
+    )
+
+    .then((res) => {
+      console.log("Courses saved to user enrollments");
+    });
+};
+
+export const createOrder = (courseIdList, user, orderId) => {
   return db
     .collection("orders")
     .doc(user.uid)
@@ -17,9 +32,9 @@ export const createOrder = (id, user) => {
       db.collection("orders")
         .doc(user.uid)
         .collection("courseList")
-        .doc(v4())
+        .doc(orderId)
         .set({
-          courseId: id,
+          courseIdList: courseIdList,
         });
       console.log("Order saved");
       return doc;
