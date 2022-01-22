@@ -1,14 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import { useHistory } from "react-router-dom";
 import { MdMenu } from "react-icons/md";
-import { FaBookOpen, FaSearch, FaShoppingCart } from "react-icons/fa";
+import { FaBookOpen, FaShoppingCart } from "react-icons/fa";
 import { ShortButton } from "../utils/utils";
 import { auth } from "../config/firebaseconfig";
 
 const Header = () => {
   var user = JSON.parse(localStorage.getItem("user"));
-  const [searchText, setSearchText] = useState("");
-  // const [searchResult, setSearchResult] = useState("");
 
   const history = useHistory();
 
@@ -17,16 +15,6 @@ const Header = () => {
     auth.signOut();
     history.push("/signin");
   };
-
-  // onClick={searchHandler}
-  // const searchHandler = async (e) => {
-  //   e.preventDefault();
-  //   if (searchText !== "") {
-  //     searchQuery(searchText).then((res) => {
-  //       setSearchResult(res);
-  //     });
-  //   }
-  // };
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light">
@@ -49,29 +37,6 @@ const Header = () => {
           className="collapse navbar-collapse justify-content-center "
           id="navbarNavDropdown"
         >
-          <div
-            id="searchContainer"
-            className="bg-light border border-dark w-50 p-2 ms-auto rounded"
-          >
-            <div className="d-flex ">
-              <input
-                style={{
-                  background: "none",
-                  outline: "none",
-                  border: "none",
-                }}
-                value={searchText}
-                onChange={(e) => setSearchText(e.target.value)}
-                type="text"
-                placeholder="Search"
-                color="#fff"
-                className="text-left ps-2 w-100 "
-              />
-              <div style={{ cursor: "pointer" }} className="h-100 my-auto pe-2">
-                <FaSearch />
-              </div>
-            </div>
-          </div>
           <div className="mt-3 ms-auto mt-lg-0">
             {user === null ? (
               <div>

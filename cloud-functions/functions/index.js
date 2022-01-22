@@ -58,82 +58,79 @@ app.post("/verifypayment", (req, res) => {
   }
 });
 
-// app.listen(7500, () => {
-//   console.log("Server is listening on 5000");
-// });
 exports.paymentFunctions = functions.https.onRequest(app);
 
-// const runtimeOpts = {
-//   timeoutSeconds: 540,
-// };
+const runtimeOpts = {
+  timeoutSeconds: 540,
+};
 
-// exports.uploadNewVideo = functions
-//   .runWith(runtimeOpts)
-//   .firestore.document(
-//     "courses/{coursesId}/sections/{sectionsId}/videos/{videoId}"
-//   )
-//   .onCreate(async (snap, context) => {
-//     const videoName = snap.data().videoName;
-//     console.log(videoName);
-//     const storage = new Storage({
-//       keyFilename: "./service-account-file.json",
-//     });
-//     const options = {
-//       version: "v2",
-//       action: "read",
-//       expires: Date.now() + 1000 * 60 * 60,
-//     };
-//     const bucket = storage.bucket("e-learn-website.appspot.com");
-//     // const url = await bucket.file("sampleVideo.mp4").getSignedUrl(options);
-//     const url = await bucket.file("compressed.mp4").download();
+exports.uploadNewVideo = functions
+  .runWith(runtimeOpts)
+  .firestore.document(
+    "courses/{coursesId}/sections/{sectionsId}/videos/{videoId}"
+  )
+  .onCreate(async (snap, context) => {
+    const videoName = snap.data().videoName;
+    console.log(videoName);
+    const storage = new Storage({
+      keyFilename: "./service-account-file.json",
+    });
+    const options = {
+      version: "v2",
+      action: "read",
+      expires: Date.now() + 1000 * 60 * 60,
+    };
+    const bucket = storage.bucket("e-learn-website.appspot.com");
+    // const url = await bucket.file("sampleVideo.mp4").getSignedUrl(options);
+    const url = await bucket.file("compressed.mp4").download();
 
-//     console.log(url);
+    console.log(url);
 
-//     //------------------------------publitio-----------------------------------------
-//     const publitio = new PublitioAPI(
-//       publitioCredentials.key,
-//       publitioCredentials.secret
-//     );
-//     var data;
-//     try {
-//       data = await publitio.uploadFile(url[0], "file", {
-//         option_download: 0,
-//       });
-//       console.log(`Uploading finished. status code: ${data.code}`);
-//     } catch (error) {
-//       console.error("Uploading error");
-//       console.error(error);
-//     }
-//     //-----------------------------publitio------------------------------------------
+    //------------------------------publitio-----------------------------------------
+    const publitio = new PublitioAPI(
+      publitioCredentials.key,
+      publitioCredentials.secret
+    );
+    var data;
+    try {
+      data = await publitio.uploadFile(url[0], "file", {
+        option_download: 0,
+      });
+      console.log(`Uploading finished. status code: ${data.code}`);
+    } catch (error) {
+      console.error("Uploading error");
+      console.error(error);
+    }
+    //-----------------------------publitio------------------------------------------
 
-//     if (data.code === 201) {
-//       console.log(
-//         `Setting data in firestore doc: ${context.params.videoId} with publitioID: ${data.id}`
-//       );
-//       await admin
-//         .firestore()
-//         .collection("courses")
-//         .doc(context.params.coursesId)
-//         .collection("sections")
-//         .doc(context.params.sectionId)
-//         .collection("videos")
-//         .doc(context.params.videoId)
-//         .set(
-//           {
-//             finishedProcessing: true,
-//             videoUrl: data.url_download,
-//             thumbUrl: data.url_thumbnail,
-//             aspectRatio: data.width / data.height,
-//             publitioId: data.id,
-//           },
-//           { merge: true }
-//         );
+    if (data.code === 201) {
+      console.log(
+        `Setting data in firestore doc: ${context.params.videoId} with publitioID: ${data.id}`
+      );
+      await admin
+        .firestore()
+        .collection("courses")
+        .doc(context.params.coursesId)
+        .collection("sections")
+        .doc(context.params.sectionId)
+        .collection("videos")
+        .doc(context.params.videoId)
+        .set(
+          {
+            finishedProcessing: true,
+            videoUrl: data.url_download,
+            thumbUrl: data.url_thumbnail,
+            aspectRatio: data.width / data.height,
+            publitioId: data.id,
+          },
+          { merge: true }
+        );
 
-//       console.log("Deleting source file");
-//       await bucket.file(videoName).delete();
-//       console.log("Done");
-//     } else {
-//       console.log("Upload status unsuccessful. Data:");
-//       console.log(data);
-//     }
-//   });
+      console.log("Deleting source file");
+      await bucket.file(videoName).delete();
+      console.log("Done");
+    } else {
+      console.log("Upload status unsuccessful. Data:");
+      console.log(data);
+    }
+  });

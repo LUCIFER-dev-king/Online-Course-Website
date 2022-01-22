@@ -1,32 +1,19 @@
 import "firebase/firestore";
 import { db } from "../../../config/firebaseconfig";
 
-export const getCourses = (limitCourses) => {
+export const getCourses = () => {
   var list = [];
 
-  return limitCourses
-    ? db
-        .collection("courses")
-        .orderBy("courseName")
-        .limit(1)
-        .get()
-        .then((snap) => {
-          snap.forEach((doc) => {
-            var addId = { ...doc.data(), id: doc.id };
-            list.push(addId);
-          });
-          return list;
-        })
-    : db
-        .collection("courses")
-        .get()
-        .then((snap) => {
-          snap.forEach((doc) => {
-            var addId = { ...doc.data(), id: doc.id };
-            list.push(addId);
-          });
-          return list;
-        });
+  return db
+    .collection("courses")
+    .get()
+    .then((snap) => {
+      snap.forEach((doc) => {
+        var addId = { ...doc.data(), id: doc.id };
+        list.push(addId);
+      });
+      return list;
+    });
 };
 
 export const setUserInDb = (user) => {

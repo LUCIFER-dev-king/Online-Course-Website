@@ -13,7 +13,7 @@ const Learn = () => {
   const { courses } = state;
 
   useEffect(() => {
-    getCourses(false).then((res) => {
+    getCourses().then((res) => {
       dispatch({
         type: SET_COURSE,
         payload: res,

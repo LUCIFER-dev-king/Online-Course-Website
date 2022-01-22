@@ -99,12 +99,11 @@ const SignUp = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              {/*TODO: value for checkbox is not added */}
               <input
                 type="checkbox"
                 className="form-checkbox-input"
                 value={isAdmin}
-                onChange={(e) => setIsAdmin((prev) => !prev)}
+                onChange={() => setIsAdmin((prev) => !prev)}
                 id="checkBox"
               />
               <label htmlFor="checkBox" className="form-check-box px-2 pt-2">

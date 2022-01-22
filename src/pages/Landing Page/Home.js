@@ -16,7 +16,7 @@ const Home = () => {
             <div className="col-md-4 my-auto">
               <h1>Let's start learning</h1>
               <p>
-                Qulaity courses at affordable pricing, trsted by 300k+ users
+                Quality courses at affordable pricing, trusted by 300k+ users
               </p>
               <button type="button" className="btn btn-primary">
                 <Link to="/learn" className="text-light">

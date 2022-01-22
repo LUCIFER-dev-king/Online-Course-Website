@@ -209,6 +209,13 @@ const AdminPanel = () => {
     <div>
       <Header />
       <div className="learnConatiner">
+        <div class="container w-100 p-2 text-white bg-warning">
+          Firebase Baze Plan upgrade is under card verfication so that cloud
+          function are disabled.{" "}
+          <a href="https://github.com/LUCIFER-dev-king/Online-Course-Website">
+            Get more info
+          </a>
+        </div>
         <div className="row">
           <div
             className="col-md-4 offset-md-4 mt-5 "

@@ -15,10 +15,19 @@ export const getCourses = async () => {
     });
 };
 
-export const getFilterCourses = (level) => {
-  //If any these not selected level, rating, language, the values are set higher so it
-  //gives all courses. ex: level=4 if not selected then below 4 is going to be get selected,
-  //which means all courses.
+export const getFilterCourses = (level, star) => {
+  /*
+    1. Level is (1, 2, 3) for (newbie, intermediate, advanced) respectively. For each 
+       level we mapped levelSetting. Using levelSetting, the inputArrayList interepets
+       each level count.
+    2. If user click and unclick the previous to fetch courses is undefined so
+       previousFilteredLevel is used which get each level after user click and restore
+       when user unclick.
+    3. Same goes reveiw.
+    4. Firestore did allow different fields to make compound queries so the courses are
+       filtered from again after level response.
+  */
+
   var list = [];
   return db
     .collection("courses")
@@ -27,24 +36,10 @@ export const getFilterCourses = (level) => {
     .then((snap) => {
       snap.forEach((doc) => {
         var addId = { ...doc.data(), id: doc.id };
-        list.push(addId);
+        if (doc.data().rating <= star) {
+          list.push(addId);
+        }
       });
       return list;
     });
 };
-
-// if (userCourseList.length !== 0) {
-//     setCourseList(userCourseList);
-//     setUserEnrollments(true);
-//   } else {
-//     var list = [];
-//     db.collection("courses")
-//       .get()
-//       .then((snap) => {
-//         snap.forEach((doc) => {
-//           var addId = { ...doc.data(), id: doc.id };
-//           list.push(addId);
-//         });
-//         setCourseList(list);
-//       });
-//   }

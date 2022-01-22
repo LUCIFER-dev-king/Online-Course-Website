@@ -26,11 +26,6 @@ function App() {
   };
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  //-Remove unnecesary code and refractre context api.
-  //--Add start in Filter section and chagne ui.
-  //----------/:courseName pathname:- cartList[0] change the url.
-  //-----Get courses in /learn has limit set to 'false'
-
   return (
     <div className="App">
       <Router>

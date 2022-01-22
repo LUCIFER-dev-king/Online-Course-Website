@@ -3,11 +3,22 @@ import { MdClose } from "react-icons/md";
 import { SET_CURRENT_COURSE_VIEW } from "../../context/coursecontext/actions.types";
 import { CourseContext } from "../../context/coursecontext/CouseContext";
 import { getFilterCourses } from "./helper/courseHelper";
+import ReviewStar from "../../component/ReviewStar";
 
 const Filter = ({ filterRef }) => {
   const { dispatch } = useContext(CourseContext);
   const [previousFilteredLevel, setPreviousFilteredLevel] = useState(0);
-  const inputArrayList = ["newbie", "intermediate", "advanced"];
+  const [previousReviewLevel, setPreviousReviewLevel] = useState(0);
+  const inputArrayList = [
+    "newbie",
+    "intermediate",
+    "advanced",
+    "oneStar",
+    "twoStar",
+    "threeStar",
+    "fourStar",
+    "fiveStar",
+  ];
   const [inputArrayCheckedList, setInputArrayCheckedList] = useState(
     new Array(inputArrayList.length).fill(false)
   );
@@ -16,6 +27,14 @@ const Filter = ({ filterRef }) => {
     newbie: 1,
     intermediate: 2,
     advanced: 3,
+  };
+  const [reviewState, setReviewState] = useState(0);
+  const reviewSettings = {
+    oneStar: 1,
+    twoStar: 2,
+    threeStar: 3,
+    fourStar: 4,
+    fiveStar: 5,
   };
 
   const filterCloseHandler = (e) => {
@@ -26,11 +45,12 @@ const Filter = ({ filterRef }) => {
   const handleOnSubmit = (e) => {
     e.preventDefault();
     setLevelState(levelState <= 0 ? 4 : levelState);
+    setReviewState(reviewState <= 0 ? 4 : reviewState);
     dispatch({
       type: SET_CURRENT_COURSE_VIEW,
       payload: [],
     });
-    getFilterCourses(levelState).then((res) => {
+    getFilterCourses(levelState, reviewState).then((res) => {
       dispatch({
         type: SET_CURRENT_COURSE_VIEW,
         payload: res,
@@ -59,10 +79,20 @@ const Filter = ({ filterRef }) => {
           setLevelState(levelSettings[inputArrayList[position]]);
         }
       } else {
-        //This reduces the level if user unclick.
-        //Downside the level becomes zero after unclik newbie.
-        //If newbie click and advance is unlick if falls to intermediate but not newbit.
         setLevelState(previousFilteredLevel);
+      }
+    } else {
+      if (updatedArrayList[position]) {
+        if (previousReviewLevel) {
+          setPreviousReviewLevel(levelState);
+        } else {
+          setPreviousReviewLevel(1);
+        }
+        if (reviewState < reviewSettings[inputArrayList[position]]) {
+          setReviewState(reviewSettings[inputArrayList[position]]);
+        }
+      } else {
+        setReviewState(previousReviewLevel);
       }
     }
   };
@@ -76,26 +106,40 @@ const Filter = ({ filterRef }) => {
 
         <form onSubmit={handleOnSubmit}>
           {inputArrayList.map((name, id) => (
-            <div
-              key={id}
-              className="mt-3 d-flex justify-content-start align-items-center"
-            >
-              <input
-                style={{ width: "15px", height: "15px" }}
-                type="checkbox"
-                name={name}
-                checked={inputArrayCheckedList[id]}
-                onChange={() => {
-                  handleInputArrayListChange(id);
-                }}
-              />
-              <label
-                style={{ textTransform: "capitalize" }}
-                className="mx-2"
-                htmlFor={name}
-              >
-                {name}
-              </label>
+            <div key={id}>
+              {id === 3 ? (
+                <div>
+                  <hr />
+                  <h5>Reviews</h5>
+                </div>
+              ) : (
+                ""
+              )}
+              <div className="mt-2 d-flex justify-content-start align-items-center">
+                <input
+                  className={id < 3 ? "" : "mt-1"}
+                  style={{ width: "15px", height: "15px" }}
+                  type="checkbox"
+                  name={name}
+                  checked={inputArrayCheckedList[id]}
+                  onChange={() => {
+                    handleInputArrayListChange(id);
+                  }}
+                />
+                {id < 3 ? (
+                  <label
+                    style={{ textTransform: "capitalize" }}
+                    className="mx-2"
+                    htmlFor={name}
+                  >
+                    {name}
+                  </label>
+                ) : (
+                  <label className="mx-2" htmlFor={name}>
+                    <ReviewStar starCount={id - 2} />
+                  </label>
+                )}
+              </div>
             </div>
           ))}
 
