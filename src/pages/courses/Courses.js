@@ -1,20 +1,17 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
-import firebase from "firebase/compat/app";
+import React, { useEffect, useContext, useRef } from "react";
 import "firebase/firestore";
 import ExpandedCard from "../../component/ExpandedCard";
 import { CourseContext } from "../../context/coursecontext/CouseContext";
 import Base from "../../layout/Base";
 import Filter from "./Filter";
-import { FaAngleUp } from "react-icons/fa";
 import { SET_CURRENT_COURSE_VIEW } from "../../context/coursecontext/actions.types";
-import { getCourses, getFilterCourses } from "./helper/courseHelper";
+import { getCourses } from "./helper/courseHelper";
 
 const Courses = () => {
   const filterRef = useRef(null);
-  const [courseList, setCourseList] = useState([]);
-  const [openFilter, setOpenFilter] = useState(false);
+
   const { state, dispatch } = useContext(CourseContext);
-  const { userCourseList, currentCourseList } = state;
+  const { currentCourseList } = state;
 
   //   const getCourses = () => {
   //     if (userCourseList.length !== 0) {
@@ -52,13 +49,6 @@ const Courses = () => {
   return (
     <Base>
       <div className="container">
-        <div id="navigation" className="mt-4">
-          <h6>
-            <a href="">Store</a>
-            <span> / </span>
-            <a href="">Courses</a>
-          </h6>
-        </div>
         <div
           onClick={filterCloseHandler}
           className="d-lg-none text-decoration-none mt-3 mt-md-0"

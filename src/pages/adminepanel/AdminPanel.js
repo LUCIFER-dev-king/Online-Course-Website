@@ -1,21 +1,15 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState } from "react";
 import { imageConfig } from "../../config/imageConfig";
-import { FaUser } from "react-icons/fa";
 import { readAndCompressImage } from "browser-image-resizer";
 import "../learn/learn.css";
 import Header from "../../layout/Header";
-import { Link, useHistory } from "react-router-dom";
-import { v4 } from "uuid";
 import firebase from "firebase/compat/app";
 import "firebase/firestore";
 import "firebase/storage";
-import { UserContext } from "../../context/Context";
 import { createCourse } from "./helper/AdminHelper";
 import ProfilePlaceholder from "../../images/profilePlaceholder.jpg";
-import { db } from "../../config/firebaseconfig";
 
 const AdminPanel = () => {
-  const db = firebase.firestore();
   const [authorName, setAuthorName] = useState("");
   const [authorDesc, setAuthorDesc] = useState("");
   const [profilePicUrl, setProfilePicUrl] = useState(null);
@@ -25,20 +19,18 @@ const AdminPanel = () => {
   const [courseTagLine, setCourseTagLine] = useState("");
   const [courseDiscount, setCourseDiscount] = useState("");
   const [sectionName, setSectionName] = useState("");
-  const [downloadUrl, setDownloadUrl] = useState(null);
+  // const [downloadUrl, setDownloadUrl] = useState(null);
   const [thumbnailUrl, setThumbnailUrl] = useState(null);
   const [isImageUploading, setIsImageUploading] = useState(false);
   const [isThumbnailUploading, setIsThumbnailUploading] = useState(false);
   const [isVideoUploading, setIsVideoUploading] = useState("");
   const [videoName, setVideoName] = useState("");
-  const context = useContext(UserContext);
-  const history = useHistory();
 
   const videoUpload = async (e) => {
     const file = e.target.files[0];
-    var metadata = {
-      contentType: file.type,
-    };
+    // var metadata = {
+    //   contentType: file.type,
+    // };
 
     const storageRef = await firebase.storage().ref();
 
@@ -58,9 +50,11 @@ const AdminPanel = () => {
           case firebase.storage.TaskState.RUNNING:
             console.log("Uploading is in prgress");
             break;
+          default:
+            return "";
         }
 
-        if (progress == 100) {
+        if (progress === 100) {
           console.log("upload sucess");
           setIsVideoUploading(false);
           console.log("Uploading is finished");
@@ -127,9 +121,11 @@ const AdminPanel = () => {
             case firebase.storage.TaskState.RUNNING:
               console.log("Uploading is in prgress");
               break;
+            default:
+              return "";
           }
 
-          if (progress == 100) {
+          if (progress === 100) {
             setIsImageUploading(false);
             console.log("Uploading is finished");
           }
@@ -142,7 +138,7 @@ const AdminPanel = () => {
             .getDownloadURL()
             .then((url) => {
               setProfilePicUrl(url);
-              console.log(downloadUrl);
+              // console.log(downloadUrl);
             })
             .catch((err) => console.log(err));
         }
@@ -182,9 +178,11 @@ const AdminPanel = () => {
             case firebase.storage.TaskState.RUNNING:
               console.log("Uploading is in prgress");
               break;
+            default:
+              return "";
           }
 
-          if (progress == 100) {
+          if (progress === 100) {
             setIsThumbnailUploading(false);
             console.log("Uploading is finished");
           }
@@ -315,11 +313,7 @@ const AdminPanel = () => {
                 {isThumbnailUploading ? (
                   <div className="spinner-border m-3" role="status"></div>
                 ) : (
-                  <label
-                    className="p-1 mt-2"
-                    htmlFor="formfile"
-                    className="form-label"
-                  >
+                  <label className="p-1 mt-2 form-label" htmlFor="formfile">
                     Pick your course thumbnail
                   </label>
                 )}
@@ -383,11 +377,7 @@ const AdminPanel = () => {
                 {isVideoUploading ? (
                   <div className="spinner-border m-3" role="status"></div>
                 ) : (
-                  <label
-                    className="p-1 mt-2"
-                    htmlFor="formfile"
-                    className="form-label"
-                  >
+                  <label className="p-1 mt-2 form-label" htmlFor="formfile">
                     Pick your video
                   </label>
                 )}

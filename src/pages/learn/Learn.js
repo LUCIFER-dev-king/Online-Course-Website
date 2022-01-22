@@ -1,22 +1,14 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import NormalCard from "../../component/NormalCard";
 import { Link } from "react-router-dom";
 import "firebase/firestore";
 import "./learn.css";
-import {
-  getCourses,
-  getEnrollments,
-  getListOfUserCourses,
-} from "./helper/LearnHelper";
+import { getCourses } from "./helper/LearnHelper";
 import { SET_COURSE } from "../../context/coursecontext/actions.types";
 import { CourseContext } from "../../context/coursecontext/CouseContext";
-import { UserContext } from "../../context/Context";
 import Base from "../../layout/Base";
-import Enrollment from "../enrollments/Enrollment";
 
 const Learn = () => {
-  const context = useContext(UserContext);
-  var user = JSON.parse(localStorage.getItem("user"));
   const { state, dispatch } = useContext(CourseContext);
   const { courses } = state;
 

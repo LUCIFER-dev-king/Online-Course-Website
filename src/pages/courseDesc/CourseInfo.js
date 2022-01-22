@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { useHistory } from "react-router-dom";
 import { addToCart } from "./helper/courseDescHelper";
 
@@ -10,10 +10,8 @@ const CourseInfo = ({
 }) => {
   const history = useHistory();
 
-  let price;
   const {
     courseName,
-    courseDesc,
     coursePrice,
     id,
     courseTagLine,
@@ -26,7 +24,7 @@ const CourseInfo = ({
     if (user) {
       if (isUserEnrolled) {
         history.push({
-          pathname: `/learn/:courseName/syllabus`,
+          pathname: `/learn/${courseName}/syllabus`,
           state: {
             course: course,
             syllabus: syllabus,
@@ -36,7 +34,7 @@ const CourseInfo = ({
         var courseList = [];
         courseList.push(course);
         history.push({
-          pathname: `/learn/${courseName}/order`,
+          pathname: "/learn/courses/order",
           state: {
             courseList: courseList,
             syllabus: syllabus,
@@ -59,10 +57,6 @@ const CourseInfo = ({
   };
 
   return (
-    //TODO: Change the fromVideoPlayer
-    //TODO: Change the Accordian
-    //TODO: Change the Reviews
-
     <div className="course-info-card ">
       <div
         className="card m-2"
@@ -81,10 +75,7 @@ const CourseInfo = ({
               <del>₹{coursePrice}</del>
             </p>
             <p className="px-2 fw-bolder">
-              ₹
-              {Math.floor(
-                (price = coursePrice - (coursePrice * courseDiscount) / 100)
-              )}
+              ₹{Math.floor(coursePrice - (coursePrice * courseDiscount) / 100)}
             </p>
             <p>{courseDiscount}% off</p>
           </div>

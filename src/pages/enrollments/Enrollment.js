@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import NormalCard from "../../component/NormalCard";
 import Base from "../../layout/Base";
 import {
@@ -13,7 +13,7 @@ const Enrollment = () => {
   useEffect(() => {
     if (user != null) {
       getEnrollments(user.uid).then((res) => {
-        if (res != undefined) {
+        if (res !== undefined) {
           res.forEach((doc) => {
             getListOfUserCourses(doc).then((result) => {
               setUserEnrollments((prev) => [...prev, result]);

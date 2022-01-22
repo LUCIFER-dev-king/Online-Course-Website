@@ -1,17 +1,15 @@
 import React from "react";
-import Footer from "./Footer";
-import Header from "./Header";
+import LandingHeader from "./LandingHeader";
 import { Link } from "react-router-dom";
 import { FaAward, FaBook, FaYoutube } from "react-icons/fa";
 import HeroImage from "../../images/heroImage.svg";
 import ELearnImage from "../../images/elearnImage.svg";
-import MobileImage from "../../images/mobileImage.svg";
 import "./home.css";
 
 const Home = () => {
   return (
     <div style={{ overflowX: "hidden" }}>
-      <Header />
+      <LandingHeader />
       <div className="container fluid">
         <section id="heroSection">
           <div className="row vh-100 hero">
@@ -27,11 +25,7 @@ const Home = () => {
               </button>
             </div>
             <div className="col-md-8 my-auto heroImage">
-              <img
-                src={HeroImage}
-                alt="Learning Image"
-                className="img-fluid my-auto"
-              />
+              <img src={HeroImage} alt="" className="img-fluid my-auto" />
             </div>
           </div>
         </section>

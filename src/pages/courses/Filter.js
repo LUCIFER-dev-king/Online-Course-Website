@@ -1,12 +1,12 @@
 import React, { useState, useContext } from "react";
-import { FaCross, FaAngleUp } from "react-icons/fa";
+import { MdClose } from "react-icons/md";
 import { SET_CURRENT_COURSE_VIEW } from "../../context/coursecontext/actions.types";
 import { CourseContext } from "../../context/coursecontext/CouseContext";
 import { getFilterCourses } from "./helper/courseHelper";
 
 const Filter = ({ filterRef }) => {
   const { dispatch } = useContext(CourseContext);
-
+  const [previousFilteredLevel, setPreviousFilteredLevel] = useState(0);
   const inputArrayList = ["newbie", "intermediate", "advanced"];
   const [inputArrayCheckedList, setInputArrayCheckedList] = useState(
     new Array(inputArrayList.length).fill(false)
@@ -50,6 +50,11 @@ const Filter = ({ filterRef }) => {
       inputArrayList[position] === "advanced"
     ) {
       if (updatedArrayList[position]) {
+        if (previousFilteredLevel) {
+          setPreviousFilteredLevel(levelState);
+        } else {
+          setPreviousFilteredLevel(1);
+        }
         if (levelState < levelSettings[inputArrayList[position]]) {
           setLevelState(levelSettings[inputArrayList[position]]);
         }
@@ -57,14 +62,14 @@ const Filter = ({ filterRef }) => {
         //This reduces the level if user unclick.
         //Downside the level becomes zero after unclik newbie.
         //If newbie click and advance is unlick if falls to intermediate but not newbit.
-        setLevelState(levelSettings[inputArrayList[position]] - 1);
+        setLevelState(previousFilteredLevel);
       }
     }
   };
   return (
     <div>
       <div className=" d-flex d-lg-none justify-content-end">
-        <FaCross onClick={filterCloseHandler} />
+        <MdClose className="fs-4" onClick={filterCloseHandler} />
       </div>
       <div className="d-flex flex-column">
         <h5>Level</h5>
@@ -87,7 +92,7 @@ const Filter = ({ filterRef }) => {
               <label
                 style={{ textTransform: "capitalize" }}
                 className="mx-2"
-                for={name}
+                htmlFor={name}
               >
                 {name}
               </label>

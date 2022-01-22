@@ -1,11 +1,9 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { getSyllabus } from "../pages/courseDesc/helper/courseDescHelper";
-import { levelFinder } from "../utils";
+import { levelFinder } from "../utils/utils";
 import ReviewStar from "./ReviewStar";
 
 const ExpandedCard = ({ courses }) => {
-  var price;
   let history = useHistory();
   const {
     courseName,
@@ -62,10 +60,7 @@ const ExpandedCard = ({ courses }) => {
       </div>
       <div className="ms-auto">
         <p className="px-2 fw-bolder">
-          ₹
-          {Math.floor(
-            (price = coursePrice - (coursePrice * courseDiscount) / 100)
-          )}
+          ₹{Math.floor(coursePrice - (coursePrice * courseDiscount) / 100)}
         </p>
       </div>
     </div>

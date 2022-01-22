@@ -28,6 +28,8 @@ function App() {
 
   //-Remove unnecesary code and refractre context api.
   //--Add start in Filter section and chagne ui.
+  //----------/:courseName pathname:- cartList[0] change the url.
+  //-----Get courses in /learn has limit set to 'false'
 
   return (
     <div className="App">
@@ -43,7 +45,7 @@ function App() {
               <Route exact path="/enrollments" component={Enrollment} />
               <Route exact path="/learn/courses" component={Courses} />
               <Route exact path="/learn/:courseName" component={CourseDesc} />
-              <Route exact path="/learn/:courseName/order" component={Order} />
+              <Route exact path="/learn/courses/order" component={Order} />
               <Route
                 exact
                 path="/learn/:courseName/syllabus"

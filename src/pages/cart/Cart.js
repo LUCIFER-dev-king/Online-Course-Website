@@ -2,11 +2,7 @@ import React, { useEffect, useState } from "react";
 import NormalCard from "../../component/NormalCard";
 import Base from "../../layout/Base";
 import { useHistory } from "react-router-dom";
-import {
-  getListOfCartCourses,
-  getUserCart,
-  removeCartItem,
-} from "./helper/cartHelper";
+import { getListOfCartCourses, getUserCart } from "./helper/cartHelper";
 
 const Cart = () => {
   var user = JSON.parse(localStorage.getItem("user"));
@@ -14,7 +10,7 @@ const Cart = () => {
   const history = useHistory();
 
   useEffect(() => {
-    if (user != null) {
+    if (user !== null) {
       getUserCart(user.uid).then((res) => {
         if (res !== undefined) {
           res.forEach((doc) => {
@@ -28,18 +24,16 @@ const Cart = () => {
   }, []);
 
   return (
-    //TODO: Add remove item.
     <Base>
-      <div class="container">
-        <div class="mt-5 d-md-flex justify-content-between align-items-center">
+      <div className="container">
+        <div className="mt-5 d-md-flex justify-content-between align-items-center">
           <h3 className="m-0 fs-3 fw-bolder">My Cart</h3>
           {cartList.length > 0 ? (
-            //TODO: Loost pathname:- cartList[0] change the url.
             <div className="mt-3 mt-lg-0">
               <div
                 onClick={() => {
                   history.push({
-                    pathname: `/learn/${cartList[0].courseName}/order`,
+                    pathname: "/learn/courses/order",
                     state: {
                       courseList: cartList,
                     },
@@ -55,7 +49,7 @@ const Cart = () => {
             ""
           )}
         </div>
-        <div class="mt-3">
+        <div className="mt-3">
           {cartList.length > 0 ? (
             <div id="card" className="d-md-flex">
               {cartList.map((cart, id) => {

@@ -1,6 +1,5 @@
 import firebase from "firebase/compat/app";
 import "firebase/firestore";
-import { v4 } from "uuid";
 import { db } from "../../../config/firebaseconfig";
 
 export const createPayment = () => {};

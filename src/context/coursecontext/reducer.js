@@ -6,7 +6,7 @@ import {
   SET_CURRENT_COURSE_VIEW,
 } from "./actions.types";
 
-export default (state, action) => {
+const Reducer = (state, action) => {
   switch (action.type) {
     case SET_LOADING:
       return { ...state, isLoading: action.payload };
@@ -32,3 +32,5 @@ export default (state, action) => {
       return state;
   }
 };
+
+export default Reducer;

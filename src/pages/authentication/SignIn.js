@@ -56,7 +56,7 @@ const SignIn = () => {
             <p>
               Don't have an account,
               <Link to="signup">
-                <a>Sign Up</a>
+                <span>Sign Up</span>
               </Link>
             </p>
           </section>
@@ -103,9 +103,6 @@ const SignIn = () => {
                 Sign In
               </button>
             </form>
-            <p className="mt-1 text-center">
-              <a href="">Forgot password?</a>
-            </p>
           </section>
         </div>
       </div>

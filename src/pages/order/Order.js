@@ -10,6 +10,7 @@ import Base from "../../layout/Base";
 import axios from "axios";
 import { v4 } from "uuid";
 import OrderCard from "../../component/OrderCard";
+import { auth } from "../../config/firebaseconfig";
 
 const Order = () => {
   const location = useLocation();
@@ -33,19 +34,19 @@ const Order = () => {
   var razorpayOptions = {
     key: "rzp_test_IFQustgDiURPOh",
     currency: "INR",
-    name: "Acme Corp",
+    name: "E Learn",
     description: "Test Transaction",
     handler: function (response) {
       console.log(response);
       verifyPayment(response);
     },
     prefill: {
-      name: "Gaurav Kumar",
-      email: "gaurav.kumar@example.com",
-      contact: "9999999999",
-    },
-    notes: {
-      address: "Razorpay Corporate Office",
+      name:
+        auth.currentUser.displayName === null
+          ? "Test"
+          : auth.currentUser.displayName,
+      email: user.email,
+      contact: "8874883789",
     },
     theme: {
       color: "#303030",

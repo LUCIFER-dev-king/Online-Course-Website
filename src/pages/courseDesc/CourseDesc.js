@@ -56,17 +56,19 @@ const CourseDesc = () => {
       setCourseReviewList(res);
     });
 
-    if (user != null) {
-      setUserDisplayName(auth.currentUser.displayName);
+    if (user !== null) {
+      if (auth.currentUser.displayName !== null) {
+        setUserDisplayName(auth.currentUser.displayName);
+      }
 
       getEnrollments(user.uid).then((res) => {
-        if (res != undefined) {
+        if (res !== undefined) {
           setIsUserEnrolled(res.find((ele) => ele === id));
         }
       });
 
       getUserCart(user.uid).then((res) => {
-        if (res != undefined) {
+        if (res !== undefined) {
           setIsCourseAddedToCart(res.find((ele) => ele === id));
         }
       });

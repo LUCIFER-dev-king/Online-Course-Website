@@ -1,8 +1,5 @@
-import firebase from "firebase/compat/app";
 import "firebase/firestore";
 import { db } from "../../../config/firebaseconfig";
-import { readAndCompressImage } from "browser-image-resizer";
-import { imageConfig } from "../../../config/imageConfig";
 import { v4 } from "uuid";
 
 const createVideoCollection = (docId, videoName, sectionName) => {
