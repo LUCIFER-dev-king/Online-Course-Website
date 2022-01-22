@@ -4,7 +4,7 @@ import "./authentication.css";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import { UserContext } from "../../context/Context";
-import { getEnrollments, setUserInDb } from "../learn/helper/LearnHelper";
+import { setUserInDb } from "../learn/helper/LearnHelper";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -30,7 +30,6 @@ const SignIn = () => {
           uid: res.user.uid,
           isAdmin: isAdmin,
         };
-        getEnrollments(res.user.uid);
         setUserInDb(user);
         localStorage.setItem("user", JSON.stringify(user));
         setTimeout(() => {

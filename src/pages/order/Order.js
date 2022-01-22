@@ -1,8 +1,11 @@
 import React, { useState } from "react";
-import "./order.css";
 import "../learn/learn.css";
 import { useLocation, useHistory } from "react-router-dom";
-import { createEnrollmentToUser, createOrder } from "./helper/orderHelper";
+import {
+  createEnrollmentToUser,
+  createOrder,
+  removeCartList,
+} from "./helper/orderHelper";
 import Base from "../../layout/Base";
 import axios from "axios";
 import { v4 } from "uuid";
@@ -13,9 +16,10 @@ const Order = () => {
   var user = JSON.parse(localStorage.getItem("user"));
   const history = useHistory();
   const courseList = location.state.courseList;
+  const [loading, setLoading] = useState(false);
   var totalPriceOfCourses = 0;
   var courseIdList = [];
-  // const [totalPrice, setTotalPrice] = useState(0);
+
   const [orderIdForDb, setOrderIdForDb] = useState("");
   if (courseList.length > 0) {
     courseList.forEach((item) => {
@@ -50,23 +54,21 @@ const Order = () => {
 
   const makePayment = (e) => {
     e.preventDefault();
-
+    //"http://localhost:5001/e-learn-website/us-central1/paymentFunctions/makepayment"
     setOrderIdForDb(v4());
-    axios(
-      "http://localhost:5001/e-learn-website/us-central1/paymentFunctions/makepayment",
-      {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        data: JSON.stringify({
-          amount: totalPriceOfCourses * 100,
-          orderId: orderIdForDb,
-        }),
-      }
-    )
+    axios("https://aqueous-plains-58324.herokuapp.com/makepayment", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      data: JSON.stringify({
+        amount: totalPriceOfCourses * 100,
+        orderId: orderIdForDb,
+      }),
+    })
       .then((res) => {
+        setLoading(true);
         console.log(res.data);
         var razor = new window.Razorpay({
           ...razorpayOptions,
@@ -81,24 +83,27 @@ const Order = () => {
   };
 
   const verifyPayment = (response) => {
-    axios(
-      "http://localhost:5001/e-learn-website/us-central1/paymentFunctions/verifypayment",
-      {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        data: JSON.stringify(response),
-      }
-    )
+    //"http://localhost:5001/e-learn-website/us-central1/paymentFunctions/verifypayment"
+    axios("https://aqueous-plains-58324.herokuapp.com/verifypayment", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      data: JSON.stringify(response),
+    })
       .then((res) => {
         console.log(res.data);
+
         createEnrollmentToUser(courseIdList, user);
         createOrder(courseIdList, user, orderIdForDb).then((doc) => {
           if (doc) {
             console.log("saved");
           }
+          if (courseList.length > 0) {
+            removeCartList(user.uid);
+          }
+          setLoading(false);
           history.push("/learn");
         });
       })
@@ -109,7 +114,26 @@ const Order = () => {
 
   return (
     <Base>
-      <div className="container py-4 px-2 mt-3">
+      {loading ? (
+        <div
+          className="m-0 p-0 d-flex justify-content-center align-items-center"
+          style={{
+            position: "fixed",
+            top: "0",
+            left: "0",
+            width: "100%",
+            height: "100%",
+            opacity: "0.4",
+            backgroundColor: "#fff",
+            zIndex: "2",
+          }}
+        >
+          <div className="spinner-border" role="status"></div>
+        </div>
+      ) : (
+        ""
+      )}
+      <div style={{ zIndex: "1" }} className="container py-4 px-2 mt-3">
         <h3 className="fw-bolder">Order Summary</h3>
         <div class="row">
           <div class="col-7">

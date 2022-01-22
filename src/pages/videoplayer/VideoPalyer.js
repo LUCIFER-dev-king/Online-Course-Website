@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { FaArrowLeft, FaPlay } from "react-icons/fa";
 import "./videoplayer.css";
 import ReactPlayer from "react-player/lazy";
@@ -13,13 +13,14 @@ const VideoPalyer = () => {
   const { state, dispatch } = useContext(CourseContext);
   const { videoUrl } = state;
   const location = useLocation();
-  const { courseName, courseDesc, coursePrice, id } = location.state.course;
+  const { courseName } = location.state.course;
+  const [currentVideoName, setCurrentVideoName] = useState("");
   const history = useHistory();
 
   const playFirstVideo = () => {
     dispatch({
       type: SET_VIDEOURL,
-      payload: location.state.syllabus[0].videoUrl,
+      payload: location.state.syllabus[0].videoList[0].videoUrl,
     });
   };
 
@@ -38,7 +39,7 @@ const VideoPalyer = () => {
               style={{ cursor: "pointer" }}
             />
             <div>
-              <h4 className="m-0 ms-2">{courseName}</h4>
+              <h4 className="m-0 ms-2 fw-bolder">{courseName}</h4>
             </div>
           </div>
           <section id="video">
@@ -61,17 +62,22 @@ const VideoPalyer = () => {
               />
             )}
           </section>
-          <div style={{ padding: "2rem" }}>
-            <h5>Current Video Name</h5>
+          <div className="px-2 py-3">
+            <h5>{currentVideoName}</h5>
           </div>
         </div>
-        <div id="syllabus-section" className="p-1 overflow-auto">
+        <div
+          id="syllabus-section"
+          className="p-1 pb-5 pb-lg-0 border overflow-auto"
+        >
           <div className="align-center fw-bolder fs-4">Course Content</div>
-
           {location.state.syllabus.length > 0
             ? location.state.syllabus.map((syllabus, id) => (
                 <Accordion key={id} defaultActiveKey="0">
-                  <AccordianCard syllabus={syllabus}></AccordianCard>
+                  <AccordianCard
+                    syllabus={syllabus}
+                    setCurrentVideoName={setCurrentVideoName}
+                  ></AccordianCard>
                 </Accordion>
               ))
             : ""}

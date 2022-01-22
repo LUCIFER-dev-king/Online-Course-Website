@@ -4,7 +4,7 @@ import Base from "../../layout/Base";
 import {
   getEnrollments,
   getListOfUserCourses,
-} from "../learn/helper/LearnHelper";
+} from "./helper/enrollmentHelper";
 
 const Enrollment = () => {
   var user = JSON.parse(localStorage.getItem("user"));

@@ -13,17 +13,12 @@ export const getListOfCartCourses = (id) => {
 };
 
 export const getUserCart = (id) => {
-  var courseIdList = [];
   return db
     .collection("users")
     .doc(id)
-    .collection("cart")
     .get()
-    .then((snap) => {
-      snap.forEach((doc) => {
-        courseIdList.push({ ...doc.data(), cartListId: doc.id });
-      });
-      return courseIdList;
+    .then((doc) => {
+      return doc.data().cartList;
     });
 };
 

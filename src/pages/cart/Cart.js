@@ -16,28 +16,18 @@ const Cart = () => {
   useEffect(() => {
     if (user != null) {
       getUserCart(user.uid).then((res) => {
-        res.forEach((doc) => {
-          getListOfCartCourses(doc.courseId).then((result) => {
-            var addIn = { ...result, cartListId: doc.cartListId };
-            setCartList((prev) => [...prev, addIn]);
+        if (res !== undefined) {
+          res.forEach((doc) => {
+            getListOfCartCourses(doc).then((result) => {
+              setCartList((prev) => [...prev, result]);
+            });
           });
-        });
+        }
       });
     }
   }, []);
 
-  const removeItemHandler = (cart) => {
-    removeCartItem(user.uid, cart.cartListId).then((res) => {
-      if (res) {
-        var filtered = cartList.filter(
-          (item) => item.cartListId !== cart.cartListId
-        );
-        setCartList(filtered);
-      }
-    });
-  };
   return (
-    //TODO: After checkout clear the cart in users Firestore.
     //TODO: Add remove item.
     <Base>
       <div class="container">
@@ -70,17 +60,14 @@ const Cart = () => {
             <div id="card" className="d-md-flex">
               {cartList.map((cart, id) => {
                 return (
-                  <div className="p-2">
-                    <NormalCard key={id} course={cart}></NormalCard>
-                    <div
-                      onClick={() => {
-                        removeItemHandler(cart);
-                      }}
-                      style={{ cursor: "pointer" }}
-                      className="rounded bg-dark mt-1 text-center w-100 text-light px-4 py-2 fw-bold"
-                    >
-                      Remove from cart
-                    </div>
+                  <div key={id} className="p-2">
+                    <NormalCard
+                      course={cart}
+                      fromCart={true}
+                      user={user}
+                      setCartList={setCartList}
+                      cartList={cartList}
+                    ></NormalCard>
                   </div>
                 );
               })}

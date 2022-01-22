@@ -3,8 +3,9 @@ import { FaStar } from "react-icons/fa";
 import ReviewStar from "../component/ReviewStar";
 import { useHistory } from "react-router-dom";
 import "./component.css";
+import { removeCartItem } from "../pages/cart/helper/cartHelper";
 
-const NormalCard = ({ course }) => {
+const NormalCard = ({ course, fromCart, user, setCartList, cartList }) => {
   let history = useHistory();
   var price;
   const {
@@ -14,6 +15,7 @@ const NormalCard = ({ course }) => {
     thumbnailUrl,
     courseDiscount,
     rating,
+    cartListId,
   } = course;
   const sendToCourseDesc = () => {
     history.push({
@@ -23,14 +25,24 @@ const NormalCard = ({ course }) => {
       },
     });
   };
+
+  const removeItemHandler = () => {
+    removeCartItem(user.uid, cartListId).then((res) => {
+      if (res) {
+        var filtered = cartList.filter(
+          (item) => item.cartListId !== cartListId
+        );
+        setCartList(filtered);
+      }
+    });
+  };
   return (
     <div
       id="course-card"
-      onClick={sendToCourseDesc}
       className="h-100 "
       style={{ width: "18rem", cursor: "pointer" }}
     >
-      <div className="normalCard ">
+      <div onClick={sendToCourseDesc} className="normalCard">
         <img
           className="card-img-top hover-zoom"
           src={thumbnailUrl}
@@ -38,7 +50,7 @@ const NormalCard = ({ course }) => {
         ></img>
       </div>
 
-      <div className="card-body p-0 py-2">
+      <div className="card-body p-0 ps-1 py-2">
         <h5 className="card-title fw-bolder m-0">{courseName}</h5>
         <p className="card-text text-muted">{authorName}</p>
         <div class="d-flex align-items-center">
@@ -62,6 +74,20 @@ const NormalCard = ({ course }) => {
           </p>
           <p>{courseDiscount}% off</p>
         </div>
+
+        {fromCart ? (
+          <div
+            onClick={() => {
+              removeItemHandler();
+            }}
+            style={{ cursor: "pointer" }}
+            className="rounded bg-dark mt-1 text-center w-100 text-light px-4 py-2 fw-bold"
+          >
+            Remove from cart
+          </div>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );

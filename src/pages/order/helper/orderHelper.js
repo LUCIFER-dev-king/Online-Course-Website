@@ -20,23 +20,38 @@ export const createEnrollmentToUser = (courseIdList, user) => {
     });
 };
 
-export const createOrder = (courseIdList, user, orderId) => {
+export const createOrder = (courseIdList, user, orderIdForDb) => {
+  console.log(orderIdForDb);
   return db
     .collection("orders")
     .doc(user.uid)
-    .set({
-      email: user.email,
-      isAdmin: user.isAdmin,
-    })
+    .set(
+      {
+        email: user.email,
+        isAdmin: user.isAdmin,
+        courseIdList: courseIdList,
+        orderIdForDb: orderIdForDb,
+      },
+      { merge: true }
+    )
     .then((doc) => {
-      db.collection("orders")
-        .doc(user.uid)
-        .collection("courseList")
-        .doc(orderId)
-        .set({
-          courseIdList: courseIdList,
-        });
       console.log("Order saved");
       return doc;
+    });
+};
+
+export const removeCartList = (uid) => {
+  db.collection("users")
+    .doc(uid)
+    .update({
+      cartList: firebase.firestore.FieldValue.delete(),
+    })
+    .then(() => {
+      console.log("Document successfully deleted!");
+
+      return true;
+    })
+    .catch((error) => {
+      console.error("Error removing document: ", error);
     });
 };

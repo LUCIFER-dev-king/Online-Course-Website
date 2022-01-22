@@ -26,7 +26,6 @@ const SignUp = () => {
           context.setUser({
             email: res.user.email,
             uid: res.user.uid,
-            name: name,
             isAdmin: isAdmin,
           });
           var user = {
@@ -36,7 +35,7 @@ const SignUp = () => {
           };
           setUserInDb(user);
           localStorage.setItem("user", JSON.stringify(user));
-          isAdmin ? history.push("/admin") : history.push("/");
+          isAdmin ? history.push("/admin") : history.push("/learn");
         })
         .catch((err) => {
           console.log("Error:", err);

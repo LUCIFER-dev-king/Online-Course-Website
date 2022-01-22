@@ -34,13 +34,13 @@ export const getSyllabus = (id) => {
     });
 };
 
-export const setReviews = (id, starCount, reviewDesc) => {
+export const setReviews = (id, userDisplayName, starCount, reviewDesc) => {
   return db
     .collection("courses")
     .doc(id)
     .collection("reviews")
     .add({
-      name: "Vinoth kumar",
+      name: userDisplayName,
       star: starCount,
       review: reviewDesc,
     })
@@ -94,8 +94,12 @@ export const addToCart = (uid, courseId) => {
   return db
     .collection("users")
     .doc(uid)
-    .collection("cart")
-    .add({ courseId })
+    .set(
+      {
+        cartList: [courseId],
+      },
+      { merge: true }
+    )
     .then((res) => {
       console.log("Saved to cart");
     })

@@ -45,11 +45,6 @@ const Header = () => {
               </a>
             </li>
 
-            <li className='nav-item my-auto'>
-              <a className='nav-link' href='#feautres'>
-                <h5>Courses</h5>
-              </a>
-            </li>
             <li className='nav-item '>
               <button type='button' className='btn btn-primary '>
                 {user ? (

@@ -27,10 +27,7 @@ function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   //-Remove unnecesary code and refractre context api.
-  //--change mycart button ui.
-  //--------upload firebase function.
   //--Add start in Filter section and chagne ui.
-  //-----Add course video and check video player.
 
   return (
     <div className="App">

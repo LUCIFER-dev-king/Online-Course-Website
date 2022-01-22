@@ -20,7 +20,7 @@
 
 #video {
   position: relative;
-  border-bottom: 1px solid green;
+  border-top: 1px solid #303030;
 }
 
 #video .video-player {

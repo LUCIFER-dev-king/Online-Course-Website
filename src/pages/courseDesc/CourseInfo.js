@@ -2,7 +2,12 @@ import React, { useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { addToCart } from "./helper/courseDescHelper";
 
-const CourseInfo = ({ course, syllabus, isUserEnrolled }) => {
+const CourseInfo = ({
+  course,
+  syllabus,
+  isUserEnrolled,
+  isCourseAddedToCart,
+}) => {
   const history = useHistory();
 
   let price;
@@ -101,13 +106,17 @@ const CourseInfo = ({ course, syllabus, isUserEnrolled }) => {
               >
                 Buy now
               </div>
-              <div
-                onClick={addToCartHandler}
-                style={{ cursor: "pointer" }}
-                className="bg-dark mt-3 text-center w-100 text-light px-4 py-2 fw-bold"
-              >
-                Add to cart
-              </div>
+              {!isCourseAddedToCart ? (
+                <div
+                  onClick={addToCartHandler}
+                  style={{ cursor: "pointer" }}
+                  className="bg-dark mt-3 text-center w-100 text-light px-4 py-2 fw-bold"
+                >
+                  Add to cart
+                </div>
+              ) : (
+                ""
+              )}
             </div>
           )}
         </div>

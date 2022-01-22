@@ -30,31 +30,10 @@ export const getCourses = (limitCourses) => {
         });
 };
 
-export const getListOfUserCourses = (id) => {
-  return db
-    .collection("courses")
-    .doc(id)
-    .get()
-    .then((doc) => {
-      var addId = { ...doc.data(), id: doc.id };
-      return addId;
-    });
-};
-
-export const getEnrollments = (id) => {
-  return db
-    .collection("users")
-    .doc(id)
-    .get()
-    .then((doc) => {
-      return doc.data().courseIdList;
-    });
-};
-
 export const setUserInDb = (user) => {
   db.collection("users")
     .doc(user.uid)
-    .set(user)
+    .set(user, { merge: true })
     .then(() => {
       console.log("User saved in DB!");
     })

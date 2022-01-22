@@ -16,7 +16,7 @@ const Home = () => {
         <section id="heroSection">
           <div className="row vh-100 hero">
             <div className="col-md-4 my-auto">
-              <h1>Learn Code Online</h1>
+              <h1>Let's start learning</h1>
               <p>
                 Qulaity courses at affordable pricing, trsted by 300k+ users
               </p>
@@ -119,38 +119,6 @@ const Home = () => {
           </div>
         </div>
       </section>
-      <div className="container fluid">
-        <section id="feautres">
-          <div className="row vh-100">
-            <div className="col-md-4 my-auto">
-              <h3>Get latest tech courses + Easy to follow videos</h3>
-              <p>
-                Tech and teaching are 2 different skills and we specialise in
-                merging them. We follow easy 3 step process:
-              </p>
-              <p>
-                Programming can be challenging and frustrating to learn. It can
-                be tough to learn. In youtube videos, it seems all good, no bugs
-                at all. We know this because we make those youtube videos.
-                Programming needs a fair blend of teaching skills to make it
-                understandable. Our speciality is to turn the tough topics in
-                easy one
-              </p>
-              <button type="button" className="btn btn-outline-primary">
-                I Write Code
-              </button>
-            </div>
-            <div className="col-md-8 my-auto">
-              <img
-                src={MobileImage}
-                alt="learning"
-                className="img-fluid my-auto"
-              />
-            </div>
-          </div>
-        </section>
-      </div>
-      <Footer />
     </div>
   );
 };

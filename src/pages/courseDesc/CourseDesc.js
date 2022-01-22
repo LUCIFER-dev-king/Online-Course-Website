@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import "firebase/firestore";
+import { auth } from "../../config/firebaseconfig";
 import AccordianCard from "../../component/AccordianCard";
 import CourseInfo from "./CourseInfo";
 import { Accordion } from "react-bootstrap";
@@ -15,7 +16,8 @@ import {
 import Base from "../../layout/Base";
 import { FaStar } from "react-icons/fa";
 import ReviewCard from "../../component/ReviewCard";
-import { getEnrollments } from "../learn/helper/LearnHelper";
+import { getEnrollments } from "../enrollments/helper/enrollmentHelper";
+import { getUserCart } from "../cart/helper/cartHelper";
 
 const CourseDesc = () => {
   const location = useLocation();
@@ -25,6 +27,8 @@ const CourseDesc = () => {
   const [revealReviewSection, setRevealReviewSection] = useState(false);
   const [courseReviewList, setCourseReviewList] = useState([]);
   const [isUserEnrolled, setIsUserEnrolled] = useState(false);
+  const [isCourseAddedToCart, setIsCourseAddedToCart] = useState(false);
+  const [userDisplayName, setUserDisplayName] = useState("");
   const {
     courseName,
     courseDesc,
@@ -47,13 +51,23 @@ const CourseDesc = () => {
       });
       console.log(syllabusList);
     });
+
     getReviews(id).then((res) => {
       setCourseReviewList(res);
     });
+
     if (user != null) {
+      setUserDisplayName(auth.currentUser.displayName);
+
       getEnrollments(user.uid).then((res) => {
         if (res != undefined) {
           setIsUserEnrolled(res.find((ele) => ele === id));
+        }
+      });
+
+      getUserCart(user.uid).then((res) => {
+        if (res != undefined) {
+          setIsCourseAddedToCart(res.find((ele) => ele === id));
         }
       });
     }
@@ -62,7 +76,7 @@ const CourseDesc = () => {
   const reviewSubmitHandler = (e) => {
     e.preventDefault();
 
-    setReviews(id, starCount, reviewDesc).then((res) => {
+    setReviews(id, userDisplayName, starCount, reviewDesc).then((res) => {
       console.log(res);
       setRevealReviewSection((prev) => !prev);
     });
@@ -85,9 +99,10 @@ const CourseDesc = () => {
               course={location.state.course}
               syllabus={syllabusList}
               isUserEnrolled={isUserEnrolled}
+              isCourseAddedToCart={isCourseAddedToCart}
             />
           </div>
-          <div id="course-desc">
+          <div id="course-desc" className="pb-5">
             <div className=" pt-3">
               <h2 className="fw-bold">{courseName}</h2>
             </div>
@@ -235,7 +250,9 @@ const CourseDesc = () => {
               ))
             ) : (
               <div className="mt-3">
-                No reviews found. Click the write review button!
+                {isUserEnrolled
+                  ? "No reviews found. Be the first one to review it"
+                  : "No review found. Buy this course to review it."}
               </div>
             )}
           </div>

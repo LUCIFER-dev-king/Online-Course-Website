@@ -1,11 +1,12 @@
 import React, { useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { CourseContext } from "../context/coursecontext/CouseContext";
-import { getEnrollments } from "../pages/learn/helper/LearnHelper";
+import { getEnrollments } from "../pages/enrollments/helper/enrollmentHelper";
 import { SET_USER_COURSE_LIST } from "../context/coursecontext/actions.types";
 import { MdMenu } from "react-icons/md";
 import { FaBookOpen, FaSearch, FaShoppingCart } from "react-icons/fa";
 import { checkObjIsEmptyOrNot, ShortButton } from "../utils";
+import { auth } from "../config/firebaseconfig";
 
 const Header = () => {
   var user = JSON.parse(localStorage.getItem("user"));
@@ -17,6 +18,8 @@ const Header = () => {
 
   const logout = () => {
     localStorage.removeItem("user");
+    auth.signOut();
+    history.push("/signin");
   };
 
   const getUserEnrollments = () => {
@@ -101,7 +104,9 @@ const Header = () => {
                   className="nav-item p-0 p-lg-2 text-decoration-none"
                   href="/signin"
                 >
-                  <ShortButton buttonName={"SIGN IN"} />
+                  <div>
+                    <ShortButton buttonName={"SIGN IN"} />
+                  </div>
                 </a>
               </div>
             ) : (
@@ -128,11 +133,10 @@ const Header = () => {
                 >
                   <FaShoppingCart className="fs-5" />
                 </div>
-                <a
-                  className="nav-item p-0 p-lg-2 text-decoration-none"
-                  href="/signin"
-                >
-                  <ShortButton onClick={logout} buttonName={"LOG OUT"} />
+                <a className="nav-item p-0 p-lg-2 text-decoration-none">
+                  <div onClick={logout}>
+                    <ShortButton buttonName={"LOG OUT"} />
+                  </div>
                 </a>
               </div>
             )}
