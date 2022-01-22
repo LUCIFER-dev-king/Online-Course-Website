@@ -136,8 +136,8 @@ const Order = () => {
       )}
       <div style={{ zIndex: "1" }} className="container py-4 px-2 mt-3">
         <h3 className="fw-bolder">Order Summary</h3>
-        <div class="row">
-          <div class="col-7">
+        <div className="row">
+          <div className="col-7">
             <div className="d-flex flex-column">
               {courseList.map((course, id) => (
                 <div key={id} className="mt-2">

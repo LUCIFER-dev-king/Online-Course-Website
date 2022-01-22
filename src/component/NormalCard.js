@@ -14,6 +14,7 @@ const NormalCard = ({ course, fromCart, user, setCartList, cartList }) => {
     courseDiscount,
     rating,
     cartListId,
+    id,
   } = course;
   const sendToCourseDesc = () => {
     history.push({
@@ -25,11 +26,9 @@ const NormalCard = ({ course, fromCart, user, setCartList, cartList }) => {
   };
 
   const removeItemHandler = () => {
-    removeCartItem(user.uid, cartListId).then((res) => {
+    removeCartItem(user.uid, id).then((res) => {
       if (res) {
-        var filtered = cartList.filter(
-          (item) => item.cartListId !== cartListId
-        );
+        var filtered = cartList.filter((item) => item.id !== id);
         setCartList(filtered);
       }
     });

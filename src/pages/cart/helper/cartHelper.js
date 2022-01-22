@@ -1,5 +1,6 @@
 import "firebase/firestore";
 import { db } from "../../../config/firebaseconfig";
+import firebase from "firebase/compat/app";
 
 export const getListOfCartCourses = (id) => {
   return db
@@ -22,13 +23,13 @@ export const getUserCart = (id) => {
     });
 };
 
-export const removeCartItem = (uid, cartId) => {
+export const removeCartItem = (uid, id) => {
   return db
     .collection("users")
     .doc(uid)
-    .collection("cart")
-    .doc(cartId)
-    .delete()
+    .update({
+      cartList: firebase.firestore.FieldValue.arrayRemove(id),
+    })
     .then(() => {
       console.log("Document successfully deleted!");
 

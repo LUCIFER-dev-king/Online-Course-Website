@@ -1,4 +1,5 @@
 import "firebase/firestore";
+import firebase from "firebase/compat/app";
 import { db } from "../../../config/firebaseconfig";
 
 export const getVideoList = (courseId, sectionId) => {
@@ -94,12 +95,10 @@ export const addToCart = (uid, courseId) => {
   return db
     .collection("users")
     .doc(uid)
-    .set(
-      {
-        cartList: [courseId],
-      },
-      { merge: true }
-    )
+
+    .update({
+      cartList: firebase.firestore.FieldValue.arrayUnion(courseId),
+    })
     .then((res) => {
       console.log("Saved to cart");
     })

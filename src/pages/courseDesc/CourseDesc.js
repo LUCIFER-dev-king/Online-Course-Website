@@ -128,7 +128,7 @@ const CourseDesc = () => {
                     <img
                       src={profilePicUrl}
                       alt="img"
-                      class="img-rounded"
+                      className="img-rounded"
                       style={{
                         width: "80px",
                         height: "80px",

@@ -209,7 +209,7 @@ const AdminPanel = () => {
     <div>
       <Header />
       <div className="learnConatiner">
-        <div class="container w-100 p-2 text-white bg-warning">
+        <div className="container w-100 p-2 text-white bg-warning">
           Firebase Baze Plan upgrade is under card verfication so that cloud
           function are disabled.{" "}
           <a href="https://github.com/LUCIFER-dev-king/Online-Course-Website">
@@ -242,7 +242,7 @@ const AdminPanel = () => {
                               : ProfilePlaceholder
                           }
                           alt="img"
-                          class="img-rounded"
+                          className="img-rounded"
                           style={{
                             width: "80px",
                             height: "80px",
