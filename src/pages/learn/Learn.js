@@ -47,7 +47,11 @@ const Learn = () => {
           <div className="row">
             {courses.map((course, id) => {
               return (
-                <div key={id} className="m-2 col" style={{ height: "300px" }}>
+                <div
+                  key={id}
+                  className="col-sm col-lg-3"
+                  style={{ height: "300px" }}
+                >
                   <NormalCard course={course}></NormalCard>
                 </div>
               );
