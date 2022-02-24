@@ -13,22 +13,24 @@ const SignIn = () => {
   const context = useContext(UserContext);
   const history = useHistory();
 
-  const handleSignIn = (e) => {
-    e.preventDefault();
+  const handleSignIn = (testemail, testpass, testadmin) => {
     firebase
       .auth()
-      .signInWithEmailAndPassword(email, password)
+      .signInWithEmailAndPassword(
+        email === "" ? testemail : email,
+        password === "" ? testpass : password
+      )
       .then((res) => {
         console.log(res);
         context.setUser({
           email: res.user.email,
           uid: res.user.uid,
-          isAdmin: isAdmin,
+          isAdmin: email === "" ? testadmin : isAdmin,
         });
         var user = {
           email: res.user.email,
           uid: res.user.uid,
-          isAdmin: isAdmin,
+          isAdmin: email === "" ? testadmin : isAdmin,
         };
         setUserInDb(user);
         localStorage.setItem("user", JSON.stringify(user));
@@ -93,7 +95,7 @@ const SignIn = () => {
                 id="checkBox"
               />
               <label htmlFor="checkBox" className="form-check-box px-2 pt-2">
-                Are your admin?
+                Are your Teacher?
               </label>
               <button
                 type="button"
@@ -101,6 +103,16 @@ const SignIn = () => {
                 className="btn btn-secondary w-100 rounded mt-3"
               >
                 Sign In
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  handleSignIn("test@test.com", "123456", true);
+                }}
+                className="btn btn-secondary w-100 rounded mt-3"
+              >
+                Guest Login
               </button>
             </form>
           </section>

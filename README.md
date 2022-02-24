@@ -8,10 +8,7 @@ E LEARN is a online course selling web app built with React and Firebase. This E
 
 - The courses encryption and payment are handled by cloud-functions.
 - Encryption is done by Publitio Api, the video uploaded to cloud storage and from that cloud functions get triggered and upload it to publitio, where the video is compressed, encrypted and returns a url.
-- Also it supports HLS encryption but it's paid, my NPM package for [https://github.com/LUCIFER-dev-king/FFmpeg-HLS-Encryption](FFmpeg-HLS-encryption).
-- Payment function has two route to create and verify the payment [https://github.com/LUCIFER-dev-king/Payment-api](Current-Payment-api).
-
-> As of now our card is under verification for blaze plan so that cloud-functions is not ready yet. If you want to test clone the repo and cd cloud-functions && cd functions && firebase emulatore:start
+- Since HLS encryption is paid in Publitio, So I've written an NPM package for HLS encryption [https://github.com/LUCIFER-dev-king/FFmpeg-HLS-Encryption](FFmpeg-HLS-encryption).
 
 ## Functionlity
 

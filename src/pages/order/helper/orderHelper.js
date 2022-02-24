@@ -2,21 +2,20 @@ import firebase from "firebase/compat/app";
 import "firebase/firestore";
 import { db } from "../../../config/firebaseconfig";
 
-export const createPayment = () => {};
-
 export const createEnrollmentToUser = (courseIdList, user) => {
-  db.collection("users")
-    .doc(user.uid)
-    .set(
-      {
-        courseIdList: courseIdList,
-      },
-      { merge: true }
-    )
-
-    .then((res) => {
-      console.log("Courses saved to user enrollments");
-    });
+  courseIdList.forEach((element) => {
+    db.collection("users")
+      .doc(user.uid)
+      .update({
+        courseIdList: firebase.firestore.FieldValue.arrayUnion(element),
+      })
+      .then((res) => {
+        console.log("Courses saved to user enrollments");
+      })
+      .catch((error) => {
+        console.error("Error writing document: ", error);
+      });
+  });
 };
 
 export const createOrder = (courseIdList, user, orderIdForDb) => {

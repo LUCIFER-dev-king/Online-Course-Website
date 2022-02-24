@@ -1,7 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { MdMenu } from "react-icons/md";
-import { FaBookOpen, FaShoppingCart } from "react-icons/fa";
+import { FaBookOpen, FaShoppingCart, FaUser } from "react-icons/fa";
 import { ShortButton } from "../utils/utils";
 import { auth } from "../config/firebaseconfig";
 
@@ -66,6 +66,17 @@ const Header = () => {
                 >
                   <FaShoppingCart className="fs-5" />
                 </div>
+                {user.isAdmin && (
+                  <div
+                    style={{ cursor: "pointer" }}
+                    className="mx-2"
+                    onClick={() => {
+                      history.push("/admin");
+                    }}
+                  >
+                    <FaUser className="fs-5" />
+                  </div>
+                )}
                 <div className="nav-item p-0 text-decoration-none">
                   <div onClick={logout}>
                     <ShortButton buttonName={"LOG OUT"} />

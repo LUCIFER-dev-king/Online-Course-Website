@@ -41,10 +41,7 @@ const Order = () => {
       verifyPayment(response);
     },
     prefill: {
-      name:
-        auth.currentUser.displayName === null
-          ? "Test"
-          : auth.currentUser.displayName,
+      name: auth.currentUser === null ? "Test" : auth.currentUser.displayName,
       email: user.email,
       contact: "8874883789",
     },
@@ -57,17 +54,20 @@ const Order = () => {
     e.preventDefault();
     //"http://localhost:5001/e-learn-website/us-central1/paymentFunctions/makepayment"
     setOrderIdForDb(v4());
-    axios("https://aqueous-plains-58324.herokuapp.com/makepayment", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      data: JSON.stringify({
-        amount: totalPriceOfCourses * 100,
-        orderId: orderIdForDb,
-      }),
-    })
+    axios(
+      "https://us-central1-e-learn-website.cloudfunctions.net/paymentFunctions/makepayment",
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        data: JSON.stringify({
+          amount: totalPriceOfCourses * 100,
+          orderId: orderIdForDb,
+        }),
+      }
+    )
       .then((res) => {
         setLoading(true);
         console.log(res.data);
@@ -85,14 +85,17 @@ const Order = () => {
 
   const verifyPayment = (response) => {
     //"http://localhost:5001/e-learn-website/us-central1/paymentFunctions/verifypayment"
-    axios("https://aqueous-plains-58324.herokuapp.com/verifypayment", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      data: JSON.stringify(response),
-    })
+    axios(
+      "https://us-central1-e-learn-website.cloudfunctions.net/paymentFunctions/verifypayment",
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        data: JSON.stringify(response),
+      }
+    )
       .then((res) => {
         console.log(res.data);
 

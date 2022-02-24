@@ -75,14 +75,9 @@ exports.uploadNewVideo = functions
     const storage = new Storage({
       keyFilename: "./service-account-file.json",
     });
-    const options = {
-      version: "v2",
-      action: "read",
-      expires: Date.now() + 1000 * 60 * 60,
-    };
+
     const bucket = storage.bucket("e-learn-website.appspot.com");
-    // const url = await bucket.file("sampleVideo.mp4").getSignedUrl(options);
-    const url = await bucket.file("compressed.mp4").download();
+    const url = await bucket.file(videoName).download();
 
     console.log(url);
 
@@ -101,18 +96,15 @@ exports.uploadNewVideo = functions
       console.error("Uploading error");
       console.error(error);
     }
-    //-----------------------------publitio------------------------------------------
+    //-----------------------------Firebase------------------------------------------
 
     if (data.code === 201) {
-      console.log(
-        `Setting data in firestore doc: ${context.params.videoId} with publitioID: ${data.id}`
-      );
       await admin
         .firestore()
         .collection("courses")
         .doc(context.params.coursesId)
         .collection("sections")
-        .doc(context.params.sectionId)
+        .doc(context.params.sectionsId)
         .collection("videos")
         .doc(context.params.videoId)
         .set(

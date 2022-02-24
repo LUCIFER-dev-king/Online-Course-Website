@@ -57,7 +57,7 @@ const CourseDesc = () => {
     });
 
     if (user !== null) {
-      if (auth.currentUser.displayName !== null) {
+      if (auth.currentUser !== null) {
         setUserDisplayName(auth.currentUser.displayName);
       }
 

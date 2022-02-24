@@ -26,6 +26,8 @@ export const getFilterCourses = (level, star) => {
     3. Same goes reveiw.
     4. Firestore did allow different fields to make compound queries so the courses are
        filtered from again after level response.
+
+       FIXME:But the cavet is that the level must be selected to filter courses.
   */
 
   var list = [];

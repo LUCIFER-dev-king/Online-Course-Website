@@ -4,8 +4,8 @@ import { readAndCompressImage } from "browser-image-resizer";
 import "../learn/learn.css";
 import Header from "../../layout/Header";
 import firebase from "firebase/compat/app";
+import "firebase/compat/storage";
 import "firebase/firestore";
-import "firebase/storage";
 import { createCourse } from "./helper/AdminHelper";
 import ProfilePlaceholder from "../../images/profilePlaceholder.jpg";
 
@@ -101,6 +101,7 @@ const AdminPanel = () => {
       let resizeImage = await readAndCompressImage(file, imageConfig);
 
       const storageRef = await firebase.storage().ref();
+      console.log(storageRef);
 
       var uploadTask = storageRef
         .child("AuthorImages/" + file.name)
@@ -209,13 +210,6 @@ const AdminPanel = () => {
     <div>
       <Header />
       <div className="learnConatiner">
-        <div className="container w-100 p-2 text-white bg-warning">
-          Firebase Baze Plan upgrade is under card verfication so that cloud
-          function are disabled.{" "}
-          <a href="https://github.com/LUCIFER-dev-king/Online-Course-Website">
-            Get more info
-          </a>
-        </div>
         <div className="row">
           <div
             className="col-md-4 offset-md-4 mt-5 "
@@ -357,7 +351,7 @@ const AdminPanel = () => {
                 />
                 <div className="mt-2 alert alert-warning">
                   For testing purposes, Only one section and one video is
-                  allowed
+                  allowed.
                 </div>
                 <label className="p-1" htmlFor="sectionName">
                   Section Name
