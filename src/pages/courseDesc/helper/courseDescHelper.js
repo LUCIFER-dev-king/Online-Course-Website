@@ -47,7 +47,6 @@ export const setReviews = (id, userDisplayName, starCount, reviewDesc) => {
     })
     .then((res) => {
       console.log("Document successfully written!");
-      return res.data();
     })
     .catch((error) => {
       console.error("Error writing document: ", error);

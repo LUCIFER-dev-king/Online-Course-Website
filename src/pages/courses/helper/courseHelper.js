@@ -23,7 +23,7 @@ export const getFilterCourses = (level, star) => {
     2. If user click and unclick the previous to fetch courses is undefined so
        previousFilteredLevel is used which get each level after user click and restore
        when user unclick.
-    3. Same goes reveiw.
+    3. Same goes review.
     4. Firestore did allow different fields to make compound queries so the courses are
        filtered from again after level response.
 

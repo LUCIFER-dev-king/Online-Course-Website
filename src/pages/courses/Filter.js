@@ -59,6 +59,7 @@ const Filter = ({ filterRef }) => {
   };
 
   const handleInputArrayListChange = (position, e) => {
+    //It updatedArrayList tells whether current input position is checked or not.
     const updatedArrayList = inputArrayCheckedList.map((item, index) =>
       index === position ? !item : item
     );
@@ -69,6 +70,8 @@ const Filter = ({ filterRef }) => {
       inputArrayList[position] === "intermediate" ||
       inputArrayList[position] === "advanced"
     ) {
+      //if checked then privousFilter -> levelState and
+      //levelState -> compare current level to previous to set higher.
       if (updatedArrayList[position]) {
         if (previousFilteredLevel) {
           setPreviousFilteredLevel(levelState);

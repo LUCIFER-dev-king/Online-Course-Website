@@ -211,12 +211,7 @@ const AdminPanel = () => {
       <Header />
       <div className="learnConatiner">
         <div className="row">
-          <div
-            className="col-md-4 offset-md-4 mt-5 "
-            style={{
-              boxShadow: "2px 2px 1px #aaaaaa",
-            }}
-          >
+          <div className="col-md-4 offset-md-4 mt-5 shadow">
             <section className="text-center">
               <h1>Create a Course</h1>
             </section>

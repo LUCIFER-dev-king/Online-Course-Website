@@ -77,10 +77,11 @@ const CourseDesc = () => {
 
   const reviewSubmitHandler = (e) => {
     e.preventDefault();
-
-    setReviews(id, userDisplayName, starCount, reviewDesc).then((res) => {
-      console.log(res);
+    setReviews(id, userDisplayName, starCount, reviewDesc).then(() => {
       setRevealReviewSection((prev) => !prev);
+      getReviews(id).then((res) => {
+        setCourseReviewList(res);
+      });
     });
   };
 
