@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import NormalCard from "../../component/NormalCard";
 import { Link } from "react-router-dom";
 import "firebase/firestore";
@@ -11,13 +11,16 @@ import Base from "../../layout/Base";
 const Learn = () => {
   const { state, dispatch } = useContext(CourseContext);
   const { courses } = state;
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setIsLoading((prev) => !prev);
     getCourses().then((res) => {
       dispatch({
         type: SET_COURSE,
         payload: res,
       });
+      setIsLoading((prev) => !prev);
     });
   }, []);
   return (
@@ -43,19 +46,25 @@ const Learn = () => {
             </Link>
           </div>
         </div>
-        <div className=" mt-3">
+        <div className="mt-3">
           <div className="row">
-            {courses.map((course, id) => {
-              return (
-                <div
-                  key={id}
-                  className="col-sm col-lg-3 mt-2"
-                  style={{ height: "300px" }}
-                >
-                  <NormalCard course={course}></NormalCard>
-                </div>
-              );
-            })}
+            {!isLoading ? (
+              courses.map((course, id) => {
+                return (
+                  <div
+                    key={id}
+                    className="col-sm col-lg-3 mt-2 d-flex justify-content-center"
+                    style={{ height: "300px" }}
+                  >
+                    <NormalCard course={course}></NormalCard>
+                  </div>
+                );
+              })
+            ) : (
+              <div className="d-flex mt-5 w-100 align-items-center justify-content-center">
+                <div className="spinner-border" role="status"></div>
+              </div>
+            )}
           </div>
         </div>
       </div>

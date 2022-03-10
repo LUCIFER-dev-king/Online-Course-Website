@@ -36,7 +36,7 @@ const NormalCard = ({ course, fromCart, user, setCartList, cartList }) => {
   return (
     <div
       id="course-card"
-      className="h-100 "
+      className="h-100 shadow rounded"
       style={{ width: "18rem", cursor: "pointer" }}
     >
       <div onClick={sendToCourseDesc} className="normalCard">
@@ -47,20 +47,20 @@ const NormalCard = ({ course, fromCart, user, setCartList, cartList }) => {
         ></img>
       </div>
 
-      <div className="card-body p-0 ps-1 py-2">
+      <div className="card-body p-0 ps-2 py-2">
         <h5 className="card-title fw-bolder m-0">{courseName}</h5>
         <p className="card-text text-muted">{authorName}</p>
         <div className="d-flex align-items-center">
           <div style={{ color: "#e59819" }} className="fw-bolder mt-1">
             {rating}
           </div>
-          <div className="ms-2">
+          <div className="ms-1">
             <ReviewStar starCount={rating} />
           </div>
         </div>
 
         <div className="d-flex mt-1">
-          <p className="px-1">
+          <p className="pe-1">
             <del>₹{coursePrice}</del>
           </p>
           <p className="px-2 fw-bolder">
