@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { imageConfig } from "../../config/imageConfig";
 import { readAndCompressImage } from "browser-image-resizer";
+import { useHistory } from "react-router-dom";
 import "../learn/learn.css";
 import Header from "../../layout/Header";
 import firebase from "firebase/compat/app";
@@ -24,6 +25,7 @@ const AdminPanel = () => {
   const [isImageUploading, setIsImageUploading] = useState(false);
   const [isThumbnailUploading, setIsThumbnailUploading] = useState(false);
   const [isVideoUploading, setIsVideoUploading] = useState("");
+  const history = useHistory();
   const [videoName, setVideoName] = useState("");
 
   const videoUpload = async (e) => {
@@ -88,7 +90,10 @@ const AdminPanel = () => {
       profilePicUrl,
       courseDiscount,
       thumbnailUrl
-    );
+    ).then((res) => {
+      console.log("Course saved");
+      history.push("/learn");
+    });
   };
 
   const profilePicker = async (e) => {
@@ -207,14 +212,14 @@ const AdminPanel = () => {
   };
 
   return (
-    <div>
+    <div className="container">
       <Header />
-      <div className="learnConatiner">
+      <div>
         <div className="row">
           <div className="col-md-4 offset-md-4 mt-5 shadow">
-            <section className="text-center">
-              <h1>Create a Course</h1>
-            </section>
+            <div className="mt-2 text-center">
+              <h4 className="fs-5 font-bolder">Let's create a course</h4>
+            </div>
 
             <section className="p-4">
               <form onSubmit={handleOnSubmit}>
@@ -239,21 +244,22 @@ const AdminPanel = () => {
                           }}
                         />
                       </label>
-                      <input
-                        type="file"
-                        name="image"
-                        id="profilePicker"
-                        accept="image/*"
-                        multiple={false}
-                        onChange={(e) => profilePicker(e)}
-                        className="form-control"
-                      />
                     </div>
                   )}
+                  <input
+                    type="file"
+                    name="image"
+                    id="profilePicker"
+                    accept="image/*"
+                    multiple={false}
+                    onChange={(e) => profilePicker(e)}
+                    className="form-control mt-2"
+                  />
                 </div>
                 <label className="p-1" htmlFor="authorName">
                   Author Name
                 </label>
+
                 <input
                   type="text"
                   name="authorName"
@@ -316,7 +322,7 @@ const AdminPanel = () => {
                 <input
                   type="file"
                   name="image"
-                  id="profilePicker"
+                  id="thunbNailPicker"
                   accept="image/*"
                   multiple={false}
                   onChange={(e) => thumbnailPicker(e)}

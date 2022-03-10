@@ -49,7 +49,7 @@ const Learn = () => {
               return (
                 <div
                   key={id}
-                  className="col-sm col-lg-3"
+                  className="col-sm col-lg-3 mt-2"
                   style={{ height: "300px" }}
                 >
                   <NormalCard course={course}></NormalCard>

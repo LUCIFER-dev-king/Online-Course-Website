@@ -4,14 +4,17 @@ import ExpandedCard from "../../component/ExpandedCard";
 import { CourseContext } from "../../context/coursecontext/CouseContext";
 import Base from "../../layout/Base";
 import Filter from "./Filter";
-import { SET_CURRENT_COURSE_VIEW } from "../../context/coursecontext/actions.types";
+import {
+  SET_CURRENT_COURSE_VIEW,
+  SET_LOADING,
+} from "../../context/coursecontext/actions.types";
 import { getCourses } from "./helper/courseHelper";
 
 const Courses = () => {
   const filterRef = useRef(null);
 
   const { state, dispatch } = useContext(CourseContext);
-  const { currentCourseList } = state;
+  const { currentCourseList, isLoading } = state;
 
   //   const getCourses = () => {
   //     if (userCourseList.length !== 0) {
@@ -32,10 +35,18 @@ const Courses = () => {
   //   };
 
   useEffect(() => {
+    dispatch({
+      type: SET_LOADING,
+      payload: true,
+    });
     getCourses().then((res) => {
       dispatch({
         type: SET_CURRENT_COURSE_VIEW,
         payload: res,
+      });
+      dispatch({
+        type: SET_LOADING,
+        payload: false,
       });
     });
   }, []);
@@ -70,15 +81,22 @@ const Courses = () => {
             <hr />
             <Filter filterRef={filterRef} />
           </div>
-
-          {currentCourseList.length > 0 ? (
-            <div className="m-1">
-              {currentCourseList.map((course, id) => {
-                return <ExpandedCard key={id} courses={course}></ExpandedCard>;
-              })}
-            </div>
+          {!isLoading ? (
+            currentCourseList.length > 0 ? (
+              <div className="m-1">
+                {currentCourseList.map((course, id) => {
+                  return (
+                    <ExpandedCard key={id} courses={course}></ExpandedCard>
+                  );
+                })}
+              </div>
+            ) : (
+              "No courses found!"
+            )
           ) : (
-            "Loading"
+            <div className="d-flex w-100 align-items-center justify-content-center">
+              <div className="spinner-border" role="status"></div>
+            </div>
           )}
         </section>
       </div>

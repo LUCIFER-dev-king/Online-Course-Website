@@ -18,7 +18,7 @@ const Home = () => {
               <p>
                 Quality courses at affordable pricing, trusted by 300k+ users
               </p>
-              <button type="button" className="btn btn-primary">
+              <button type="button" className="btn btn-primary  mt-2 mt-md-0">
                 <Link to="/learn" className="text-light">
                   Explore Couse Library{" "}
                 </Link>
@@ -26,60 +26,6 @@ const Home = () => {
             </div>
             <div className="col-md-8 my-auto heroImage">
               <img src={HeroImage} alt="" className="img-fluid my-auto" />
-            </div>
-          </div>
-        </section>
-
-        <section className="text-center" id="serviceSection">
-          <div className="row p-5">
-            <h2 className="mt-5">SERVICES</h2>
-            <div className="col-md-4 mt-3">
-              <div className="card">
-                <div className="card-body">
-                  <FaBook size={42} className="m-1" />
-                  <h5>Courses</h5>
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Aliquid excepturi laudantium doloribus laboriosam similique
-                    perspiciatis fuga architecto officiis voluptas nostrum.
-                  </p>
-                  <button type="button" className="btn btn-outline-primary">
-                    Try free courses
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-4 mt-3">
-              <div className="card">
-                <div className="card-body">
-                  <FaAward size={42} className="m-1" />
-                  <h5>Coming soon</h5>
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Aliquid excepturi laudantium doloribus laboriosam similique
-                    perspiciatis fuga architecto officiis voluptas nostrum.
-                  </p>
-                  <button type="button" className="btn btn-outline-primary">
-                    Coming soon
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-4 mt-3">
-              <div className="card">
-                <div className="card-body">
-                  <FaYoutube size={42} className="m-1" />
-                  <h5>Youtube</h5>
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Aliquid excepturi laudantium doloribus laboriosam similique
-                    perspiciatis fuga architecto officiis voluptas nostrum.
-                  </p>
-                  <button type="button" className="btn btn-outline-primary">
-                    Visit Channel
-                  </button>
-                </div>
-              </div>
             </div>
           </div>
         </section>
@@ -95,11 +41,11 @@ const Home = () => {
           </div>
           <div className="col-sm-6 my-auto p-5">
             <h3>Get latest tech courses + Easy to follow videos</h3>
-            <p>
+            <p className=" mt-2 mt-md-0">
               Tech and teaching are 2 different skills and we specialise in
               merging them. We follow easy 3 step process:
             </p>
-            <p>
+            <p className=" mt-2 mt-md-0">
               Programming can be challenging and frustrating to learn. It can be
               tough to learn. In youtube videos, it seems all good, no bugs at
               all. We know this because we make those youtube videos.
@@ -107,8 +53,11 @@ const Home = () => {
               understandable. Our speciality is to turn the tough topics in easy
               one
             </p>
-            <button type="button" className="btn btn-outline-primary">
-              I Write Code
+            <button
+              type="button"
+              className="btn btn-outline-primary mt-2 mt-md-0"
+            >
+              Let's begin
             </button>
           </div>
         </div>

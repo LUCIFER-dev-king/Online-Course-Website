@@ -5,48 +5,54 @@ import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import { UserContext } from "../../context/Context";
 import { setUserInDb } from "../learn/helper/LearnHelper";
+import { MdClose } from "react-icons/md";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isAdmin, setIsAdmin] = useState(false);
   const context = useContext(UserContext);
   const history = useHistory();
+  const [errorMsg, setErrorMsg] = useState("");
 
   const handleSignIn = (testemail, testpass, testadmin) => {
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(
-        email === "" ? testemail : email,
-        password === "" ? testpass : password
-      )
-      .then((res) => {
-        console.log(res);
-        context.setUser({
-          email: res.user.email,
-          uid: res.user.uid,
-          isAdmin: email === "" ? testadmin : isAdmin,
+    if ((email && password) !== "" || testemail) {
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(
+          email === "" ? testemail : email,
+          password === "" ? testpass : password
+        )
+        .then((res) => {
+          console.log(res);
+          context.setUser({
+            email: res.user.email,
+            uid: res.user.uid,
+            isAdmin: testadmin,
+          });
+          var user = {
+            email: res.user.email,
+            uid: res.user.uid,
+            isAdmin: testadmin,
+          };
+          setUserInDb(user);
+          localStorage.setItem("user", JSON.stringify(user));
+          history.push("/learn");
+        })
+        .catch((err) => {
+          console.log("Error:", err.message);
+          setErrorMsg(err.message.replace("Firebase:", ""));
         });
-        var user = {
-          email: res.user.email,
-          uid: res.user.uid,
-          isAdmin: email === "" ? testadmin : isAdmin,
-        };
-        setUserInDb(user);
-        localStorage.setItem("user", JSON.stringify(user));
-        setTimeout(() => {
-          isAdmin ? history.push("/admin") : history.push("/learn");
-        }, 1500);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    } else {
+      setErrorMsg("Please enter email and password");
+    }
   };
 
   return (
     <div className="container fluid">
-      <div className="explore">
-        <Link to="/learn">Explore</Link>
+      <div className="explore-btn">
+        <Link className="explore-btn-text" to="/learn">
+          Explore
+        </Link>
       </div>
       <div className="row">
         <div className="col-md-4 offset-md-4 mt-5">
@@ -56,12 +62,21 @@ const SignIn = () => {
             <h4 className="p-2">Welcome Back</h4>
 
             <p>
-              Don't have an account,
+              Don't have an account,{" "}
               <Link to="signup">
                 <span>Sign Up</span>
               </Link>
             </p>
           </section>
+
+          {errorMsg !== "" && (
+            <section class="px-4 pt-4">
+              <div class="w-100 bg-gray rounded shadow p-2">
+                <MdClose className="fs-4 fw-bold text-danger" />
+                {errorMsg}
+              </div>
+            </section>
+          )}
 
           <section className="p-4">
             <form action="">
@@ -87,16 +102,7 @@ const SignIn = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              <input
-                type="checkbox"
-                className="form-checkbox-input"
-                value={isAdmin}
-                onChange={(e) => setIsAdmin((prev) => !prev)}
-                id="checkBox"
-              />
-              <label htmlFor="checkBox" className="form-check-box px-2 pt-2">
-                Are your Teacher?
-              </label>
+
               <button
                 type="button"
                 onClick={handleSignIn}
@@ -108,11 +114,21 @@ const SignIn = () => {
               <button
                 type="button"
                 onClick={() => {
-                  handleSignIn("ramesh@gmail.com", "123456", true);
+                  handleSignIn("ramesh@gmail.com", "123456", false);
                 }}
                 className="btn btn-secondary w-100 rounded mt-3"
               >
                 Guest Login
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  handleSignIn("ramesh@gmail.com", "123456", true);
+                }}
+                className="btn btn-secondary w-100 rounded mt-3"
+              >
+                Login in as Admin
               </button>
             </form>
           </section>

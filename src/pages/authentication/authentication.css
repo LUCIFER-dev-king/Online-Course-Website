@@ -1,14 +1,14 @@
-.explore {
+.explore-btn {
   position: absolute;
   top: 0;
   right: 0;
-  padding: 0.5rem;
+  padding: 0.5rem 1rem;
   margin: 0.5rem 1rem;
 }
 
-.explore:hover {
-  background-color: cornsilk;
+.explore-btn:hover > .explore-btn-text,
+.explore-btn:hover {
+  background-color: black;
   color: #fff;
-  border-radius: 50px;
   cursor: pointer;
 }

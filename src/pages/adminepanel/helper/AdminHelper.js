@@ -7,21 +7,24 @@ const createVideoCollection = (docId, videoName, sectionName) => {
   var sectionId = v4();
   var dbRef = db.collection("courses").doc(docId);
 
-  dbRef
-    .collection("sections")
-    .doc(sectionId)
-    .set({
-      sectionName: sectionName,
-    })
-    .then(() => {
-      dbRef.collection("sections").doc(sectionId).collection("videos").add({
-        videoName: videoName,
-        finishedProcessing: false,
+  return new Promise((resolve) => {
+    dbRef
+      .collection("sections")
+      .doc(sectionId)
+      .set({
+        sectionName: sectionName,
+      })
+      .then(() => {
+        dbRef.collection("sections").doc(sectionId).collection("videos").add({
+          videoName: videoName,
+          finishedProcessing: false,
+        });
+        resolve();
+      })
+      .catch((err) => {
+        console.log("Error occured", err);
       });
-    })
-    .catch((err) => {
-      console.log("Error occured", err);
-    });
+  });
 };
 
 export const createCourse = (
@@ -38,7 +41,8 @@ export const createCourse = (
   thumbnailUrl
 ) => {
   var docId = v4();
-  db.collection("courses")
+  return db
+    .collection("courses")
     .doc(docId)
     .set({
       courseName: courseName,
@@ -53,9 +57,8 @@ export const createCourse = (
       level: 1,
       rating: 2,
     })
-    .then((doc) => {
-      console.log("Course saved", doc);
-      createVideoCollection(docId, videoName, sectionName);
+    .then(async (doc) => {
+      return await createVideoCollection(docId, videoName, sectionName);
     })
     .catch((err) => {
       console.log("Error:", err);

@@ -29,11 +29,15 @@ const Enrollment = () => {
         <div className="mt-4 ">
           <h3 className="fs-3 mt-5 fw-bolder">My Enrollments</h3>
           {userEnrollments.length > 0 ? (
-            <div id="card" className="d-md-flex">
+            <div className="row">
               {userEnrollments.map((enrollments, id) => {
                 return (
-                  <div key={id} className="m-2" style={{ height: "350px" }}>
-                    <NormalCard course={enrollments}></NormalCard>;
+                  <div
+                    key={id}
+                    className="col-sm col-lg-3 mt-2"
+                    style={{ height: "300px" }}
+                  >
+                    <NormalCard course={enrollments}></NormalCard>
                   </div>
                 );
               })}

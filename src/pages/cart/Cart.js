@@ -51,20 +51,26 @@ const Cart = () => {
         </div>
         <div className="mt-3">
           {cartList.length > 0 ? (
-            <div id="card" className="d-md-flex">
-              {cartList.map((cart, id) => {
-                return (
-                  <div key={id} className="p-2">
-                    <NormalCard
-                      course={cart}
-                      fromCart={true}
-                      user={user}
-                      setCartList={setCartList}
-                      cartList={cartList}
-                    ></NormalCard>
-                  </div>
-                );
-              })}
+            <div>
+              <div className="row">
+                {cartList.map((cart, id) => {
+                  return (
+                    <div
+                      key={id}
+                      className="col-sm col-lg-3 mt-2"
+                      style={{ height: "320px" }}
+                    >
+                      <NormalCard
+                        course={cart}
+                        fromCart={true}
+                        user={user}
+                        setCartList={setCartList}
+                        cartList={cartList}
+                      ></NormalCard>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           ) : (
             <div className="text-muted">Please add some courses to cart.</div>

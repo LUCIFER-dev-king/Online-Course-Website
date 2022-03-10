@@ -35,11 +35,6 @@ const LandingHeader = () => {
               </a>
             </li>
             <li className="nav-item my-auto">
-              <a className="nav-link" href="#serviceSection">
-                <h5>Service</h5>
-              </a>
-            </li>
-            <li className="nav-item my-auto">
               <a className="nav-link" href="#aboutUs">
                 <h5>About us</h5>
               </a>

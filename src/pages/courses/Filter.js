@@ -1,14 +1,15 @@
 import React, { useState, useContext } from "react";
 import { MdClose } from "react-icons/md";
-import { SET_CURRENT_COURSE_VIEW } from "../../context/coursecontext/actions.types";
+import {
+  SET_CURRENT_COURSE_VIEW,
+  SET_LOADING,
+} from "../../context/coursecontext/actions.types";
 import { CourseContext } from "../../context/coursecontext/CouseContext";
 import { getFilterCourses } from "./helper/courseHelper";
 import ReviewStar from "../../component/ReviewStar";
 
 const Filter = ({ filterRef }) => {
   const { dispatch } = useContext(CourseContext);
-  const [previousFilteredLevel, setPreviousFilteredLevel] = useState(0);
-  const [previousReviewLevel, setPreviousReviewLevel] = useState(0);
   const inputArrayList = [
     "newbie",
     "intermediate",
@@ -22,13 +23,11 @@ const Filter = ({ filterRef }) => {
   const [inputArrayCheckedList, setInputArrayCheckedList] = useState(
     new Array(inputArrayList.length).fill(false)
   );
-  const [levelState, setLevelState] = useState(0);
   const levelSettings = {
     newbie: 1,
     intermediate: 2,
     advanced: 3,
   };
-  const [reviewState, setReviewState] = useState(0);
   const reviewSettings = {
     oneStar: 1,
     twoStar: 2,
@@ -42,24 +41,35 @@ const Filter = ({ filterRef }) => {
     filterRef.current.style.transform = "translateX(-100%)";
   };
 
-  const handleOnSubmit = (e) => {
-    e.preventDefault();
-    setLevelState(levelState <= 0 ? 4 : levelState);
-    setReviewState(reviewState <= 0 ? 4 : reviewState);
+  const handleOnSubmit = (level, review) => {
     dispatch({
       type: SET_CURRENT_COURSE_VIEW,
       payload: [],
     });
-    getFilterCourses(levelState, reviewState).then((res) => {
+    dispatch({
+      type: SET_LOADING,
+      payload: true,
+    });
+    getFilterCourses(level, review).then((res) => {
       dispatch({
         type: SET_CURRENT_COURSE_VIEW,
         payload: res,
       });
+      dispatch({
+        type: SET_LOADING,
+        payload: false,
+      });
     });
   };
 
+  const [levelArray, setLevelArray] = useState([]);
+  const [reviewArray, setReviewArray] = useState([]);
+
   const handleInputArrayListChange = (position, e) => {
-    //It updatedArrayList tells whether current input position is checked or not.
+    var levelArr = levelArray;
+    var reviewArr = reviewArray;
+
+    //Checking whether it is previously clicked.
     const updatedArrayList = inputArrayCheckedList.map((item, index) =>
       index === position ? !item : item
     );
@@ -70,32 +80,31 @@ const Filter = ({ filterRef }) => {
       inputArrayList[position] === "intermediate" ||
       inputArrayList[position] === "advanced"
     ) {
-      //if checked then privousFilter -> levelState and
-      //levelState -> compare current level to previous to set higher.
+      //If it clicked first time
       if (updatedArrayList[position]) {
-        if (previousFilteredLevel) {
-          setPreviousFilteredLevel(levelState);
-        } else {
-          setPreviousFilteredLevel(1);
-        }
-        if (levelState < levelSettings[inputArrayList[position]]) {
-          setLevelState(levelSettings[inputArrayList[position]]);
-        }
-      } else {
-        setLevelState(previousFilteredLevel);
+        levelArr.push(levelSettings[inputArrayList[position]]);
+        setLevelArray(levelArr);
+        handleOnSubmit(levelArr, reviewArray);
+      }
+      //If it was already clicked time
+      else {
+        levelArr = levelArr.filter(
+          (levels) => levels !== levelSettings[inputArrayList[position]]
+        );
+        setLevelArray(levelArr);
+        handleOnSubmit(levelArr, reviewArray);
       }
     } else {
       if (updatedArrayList[position]) {
-        if (previousReviewLevel) {
-          setPreviousReviewLevel(levelState);
-        } else {
-          setPreviousReviewLevel(1);
-        }
-        if (reviewState < reviewSettings[inputArrayList[position]]) {
-          setReviewState(reviewSettings[inputArrayList[position]]);
-        }
+        reviewArr.push(reviewSettings[inputArrayList[position]]);
+        setReviewArray(reviewArr);
+        handleOnSubmit(levelArray, reviewArr);
       } else {
-        setReviewState(previousReviewLevel);
+        reviewArr = reviewArr.filter(
+          (reviews) => reviews !== reviewSettings[inputArrayList[position]]
+        );
+        setReviewArray(reviewArr);
+        handleOnSubmit(levelArray, reviewArr);
       }
     }
   };
@@ -107,7 +116,7 @@ const Filter = ({ filterRef }) => {
       <div className="d-flex flex-column">
         <h5>Level</h5>
 
-        <form onSubmit={handleOnSubmit}>
+        <form>
           {inputArrayList.map((name, id) => (
             <div key={id}>
               {id === 3 ? (
@@ -147,16 +156,6 @@ const Filter = ({ filterRef }) => {
           ))}
 
           <hr />
-          <div className="mt-3">
-            <button
-              id="filterSearchBtn"
-              type="submit"
-              style={{ cursor: "pointer" }}
-              className="rounded mt-3 text-center w-100 px-4 py-2 fw-bold"
-            >
-              Search
-            </button>
-          </div>
         </form>
       </div>
     </div>

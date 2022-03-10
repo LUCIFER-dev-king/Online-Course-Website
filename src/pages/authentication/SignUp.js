@@ -4,13 +4,14 @@ import firebase from "firebase/compat/app";
 import "firebase/auth";
 import { UserContext } from "../../context/Context";
 import { setUserInDb } from "../learn/helper/LearnHelper";
+import { MdClose } from "react-icons/md";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const [isAdmin, setIsAdmin] = useState(false);
   const context = useContext(UserContext);
+  const [errorMsg, setErrorMsg] = useState("");
   const history = useHistory();
 
   const handleSignUpSubmit = (event) => {
@@ -26,28 +27,32 @@ const SignUp = () => {
           context.setUser({
             email: res.user.email,
             uid: res.user.uid,
-            isAdmin: isAdmin,
+            isAdmin: false,
           });
           var user = {
             email: res.user.email,
             uid: res.user.uid,
-            isAdmin: isAdmin,
+            isAdmin: false,
           };
           setUserInDb(user);
           localStorage.setItem("user", JSON.stringify(user));
-          isAdmin ? history.push("/admin") : history.push("/learn");
+          history.push("/learn");
         })
         .catch((err) => {
-          console.log("Error:", err);
-          //toast(err.message, { type: "error" });
+          console.log("Error:", err.message);
+          setErrorMsg(err.message.replace("Firebase:", ""));
         });
+    } else {
+      setErrorMsg("Please enter email and password");
     }
   };
 
   return (
     <div className="container fluid">
-      <div className="explore">
-        <Link to="/learn">Explore</Link>
+      <div className="explore-btn">
+        <Link className="explore-btn-text" to="/learn">
+          Explore
+        </Link>
       </div>
       <div className="row">
         <div className="col-md-4 offset-md-4 mt-5">
@@ -57,12 +62,20 @@ const SignUp = () => {
             <h4 className="p-2">Create your account</h4>
 
             <p>
-              Already have an account,
+              Already have an account,{" "}
               <Link to="signin">
-                <span>Sign Up</span>
+                <span>Sign In</span>
               </Link>
             </p>
           </section>
+          {errorMsg !== "" && (
+            <section class="px-4 pt-4">
+              <div class="w-100 bg-gray rounded shadow p-2">
+                <MdClose className="fs-4 fw-bold text-danger" />
+                {errorMsg}
+              </div>
+            </section>
+          )}
 
           <section className="p-4">
             <form action="">
@@ -99,16 +112,7 @@ const SignUp = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              <input
-                type="checkbox"
-                className="form-checkbox-input"
-                value={isAdmin}
-                onChange={() => setIsAdmin((prev) => !prev)}
-                id="checkBox"
-              />
-              <label htmlFor="checkBox" className="form-check-box px-2 pt-2">
-                Are your admin?
-              </label>
+
               <button
                 type="button"
                 className="btn btn-secondary w-100 rounded mt-3"

@@ -2,7 +2,7 @@ import React from "react";
 
 const OrderCard = ({ course }) => {
   return (
-    <div className="d-flex justify-content-start">
+    <div className="d-md-flex justify-content-start">
       <img
         style={{
           width: "250px",

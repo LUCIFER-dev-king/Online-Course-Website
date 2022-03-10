@@ -22,6 +22,7 @@ const VideoPalyer = () => {
       type: SET_VIDEOURL,
       payload: location.state.syllabus[0].videoList[0].videoUrl,
     });
+    setCurrentVideoName(location.state.syllabus[0].videoList[0].videoName);
   };
 
   const goBack = () => {
@@ -77,6 +78,7 @@ const VideoPalyer = () => {
                   <AccordianCard
                     syllabus={syllabus}
                     setCurrentVideoName={setCurrentVideoName}
+                    isCallFromCourseDesc={false}
                   ></AccordianCard>
                 </Accordion>
               ))

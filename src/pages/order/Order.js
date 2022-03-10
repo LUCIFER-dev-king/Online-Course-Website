@@ -48,6 +48,35 @@ const Order = () => {
     theme: {
       color: "#303030",
     },
+    modal: {
+      ondismiss: () => {
+        setLoading((prev) => !prev);
+      },
+    },
+    config: {
+      display: {
+        blocks: {
+          hdfc: {
+            name: "Pay using via cards",
+            instruments: [
+              {
+                method: "card",
+                types: ["debit", "credit"],
+              },
+            ],
+          },
+        },
+        hide: [
+          {
+            method: "upi",
+          },
+        ],
+        sequence: ["block.hdfc", "block.other"],
+        preferences: {
+          show_default_blocks: false,
+        },
+      },
+    },
   };
 
   const makePayment = (e) => {

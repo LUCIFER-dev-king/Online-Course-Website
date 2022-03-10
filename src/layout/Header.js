@@ -47,37 +47,44 @@ const Header = () => {
                 </a>
               </div>
             ) : (
-              <div className="d-flex align-items-center">
+              <div className="d-md-flex align-items-center">
                 <div
                   style={{ cursor: "pointer" }}
-                  className="me-3"
+                  className="me-3 mt-2 mt-md-0 d-flex align-items-center"
                   onClick={() => {
                     history.push("/enrollments");
                   }}
                 >
                   <FaBookOpen className="fs-5" />
+                  <span className="d-md-none ms-2">Enrollments</span>
                 </div>
                 <div
                   style={{ cursor: "pointer" }}
-                  className="me-2"
+                  className="me-2 mt-2 mt-md-0 d-flex align-items-center"
                   onClick={() => {
                     history.push("/mycart");
                   }}
                 >
-                  <FaShoppingCart className="fs-5" />
+                  <FaShoppingCart className="fs-5 " />
+                  <span className="d-md-none ms-2">Cart</span>
                 </div>
                 {user.isAdmin && (
                   <div
                     style={{ cursor: "pointer" }}
-                    className="mx-2"
+                    className="mx-0 mx-md-2 mt-3 mt-md-0"
                     onClick={() => {
                       history.push("/admin");
                     }}
                   >
-                    <FaUser className="fs-5" />
+                    <div
+                      style={{ cursor: "pointer" }}
+                      className="d-inline  bg-light border border-dark mt-3 text-center  text-dark px-4 py-2 fw-bold"
+                    >
+                      Admin
+                    </div>
                   </div>
                 )}
-                <div className="nav-item p-0 text-decoration-none">
+                <div className="nav-item p-0 text-decoration-none mt-4 mt-md-0">
                   <div onClick={logout}>
                     <ShortButton buttonName={"LOG OUT"} />
                   </div>

@@ -15,33 +15,50 @@ export const getCourses = async () => {
     });
 };
 
-export const getFilterCourses = (level, star) => {
-  /*
-    1. Level is (1, 2, 3) for (newbie, intermediate, advanced) respectively. For each 
-       level we mapped levelSetting. Using levelSetting, the inputArrayList interepets
-       each level count.
-    2. If user click and unclick the previous to fetch courses is undefined so
-       previousFilteredLevel is used which get each level after user click and restore
-       when user unclick.
-    3. Same goes review.
-    4. Firestore did allow different fields to make compound queries so the courses are
-       filtered from again after level response.
+export const getFilterCourses = (levelArr, reviewArr) => {
+  //We can't make queries same index like : .where('level', '==', '2').where('level', '==', '3')
+  // There is no such query exists firebase to do that Logical OR operation
+  // Firebase team mentioned clearly docs.
+  // https://firebase.google.com/docs/firestore/query-data/queries?hl=en&authuser=0#query_limitations
 
-       FIXME:But the cavet is that the level must be selected to filter courses.
-  */
+  //levelArr has level and revewArr has reviews. We just check whether the course level and
+  // review is present inside levelarr and reviewarr.
 
   var list = [];
+
   return db
     .collection("courses")
-    .where("level", "<=", level)
     .get()
-    .then((snap) => {
+    .then(async (snap) => {
       snap.forEach((doc) => {
-        var addId = { ...doc.data(), id: doc.id };
-        if (doc.data().rating <= star) {
-          list.push(addId);
+        //What if user didn't selected reviw and level. At that time we need to send all course.
+        if (levelArr.length === 0 && reviewArr.length === 0) {
+          list.push({ ...doc.data(), id: doc.id });
+        }
+
+        //What if user clicked both level and review
+        if (levelArr.length > 0 && levelArr.includes(doc.data().level)) {
+          if (reviewArr.length > 0 && reviewArr.includes(doc.data().rating)) {
+            list.push({ ...doc.data(), id: doc.id });
+          }
+          //What if user clicked only level
+          else if (reviewArr.length === 0) {
+            list.push({ ...doc.data(), id: doc.id });
+          }
+        }
+        //What if user clicked both review first instead of level
+        else if (
+          reviewArr.length > 0 &&
+          reviewArr.includes(doc.data().rating)
+        ) {
+          if (levelArr.length > 0 && levelArr.includes(doc.data().level)) {
+            list.push({ ...doc.data(), id: doc.id });
+          } else if (levelArr.length === 0) {
+            list.push({ ...doc.data(), id: doc.id });
+          }
         }
       });
+
       return list;
     });
 };

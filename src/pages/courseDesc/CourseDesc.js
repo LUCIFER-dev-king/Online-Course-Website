@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import "firebase/firestore";
 import { auth } from "../../config/firebaseconfig";
 import AccordianCard from "../../component/AccordianCard";
@@ -20,6 +20,8 @@ import { getEnrollments } from "../enrollments/helper/enrollmentHelper";
 import { getUserCart } from "../cart/helper/cartHelper";
 
 const CourseDesc = () => {
+  const history = useHistory();
+
   const location = useLocation();
   const [syllabusList, setSyllabusList] = useState([]);
   const [reviewDesc, setReviewDesc] = useState("");
@@ -29,6 +31,9 @@ const CourseDesc = () => {
   const [isUserEnrolled, setIsUserEnrolled] = useState(false);
   const [isCourseAddedToCart, setIsCourseAddedToCart] = useState(false);
   const [userDisplayName, setUserDisplayName] = useState("");
+  if (location.state === undefined) {
+    history.goBack();
+  }
   const {
     courseName,
     courseDesc,
@@ -57,6 +62,7 @@ const CourseDesc = () => {
     });
 
     if (user !== null) {
+      console.log(auth.currentUser);
       if (auth.currentUser !== null) {
         setUserDisplayName(auth.currentUser.displayName);
       }
@@ -77,7 +83,13 @@ const CourseDesc = () => {
 
   const reviewSubmitHandler = (e) => {
     e.preventDefault();
-    setReviews(id, userDisplayName, starCount, reviewDesc).then(() => {
+
+    setReviews(
+      id,
+      userDisplayName === "" ? "Ramesh" : userDisplayName,
+      starCount,
+      reviewDesc
+    ).then(() => {
       setRevealReviewSection((prev) => !prev);
       getReviews(id).then((res) => {
         setCourseReviewList(res);
@@ -116,7 +128,10 @@ const CourseDesc = () => {
             {syllabusList.length > 0
               ? syllabusList.map((syllabus, id) => (
                   <Accordion key={id} defaultActiveKey="0">
-                    <AccordianCard syllabus={syllabus}></AccordianCard>
+                    <AccordianCard
+                      syllabus={syllabus}
+                      isCallFromCourseDesc={true}
+                    ></AccordianCard>
                   </Accordion>
                 ))
               : ""}
@@ -254,7 +269,7 @@ const CourseDesc = () => {
             ) : (
               <div className="mt-3">
                 {isUserEnrolled
-                  ? "No reviews found. Be the first one to review it"
+                  ? "No reviews found"
                   : "No review found. Buy this course to review it."}
               </div>
             )}

@@ -3,7 +3,11 @@ import { CourseContext } from "../context/coursecontext/CouseContext";
 import { SET_VIDEOURL } from "../context/coursecontext/actions.types";
 import { Accordion, Card, useAccordionButton } from "react-bootstrap";
 
-const AccordianCard = ({ syllabus, setCurrentVideoName }) => {
+const AccordianCard = ({
+  syllabus,
+  setCurrentVideoName,
+  isCallFromCourseDesc,
+}) => {
   const { dispatch } = useContext(CourseContext);
 
   const CustomToggle = ({ children, eventKey }) => {
@@ -38,7 +42,11 @@ const AccordianCard = ({ syllabus, setCurrentVideoName }) => {
             className="text-dark rounded"
           >
             <Card.Body
-              onClick={() => handleVideoPlayerUrl(video)}
+              onClick={() => {
+                if (!isCallFromCourseDesc) {
+                  handleVideoPlayerUrl(video);
+                }
+              }}
               id="accordian-body"
               className=" rounded"
             >
