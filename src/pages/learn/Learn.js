@@ -46,7 +46,7 @@ const Learn = () => {
             </Link>
           </div>
         </div>
-        <div className="mt-3">
+        <div className="mt-3 mb-5">
           <div className="row">
             {!isLoading ? (
               courses.map((course, id) => {

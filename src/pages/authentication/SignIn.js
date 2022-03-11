@@ -70,8 +70,8 @@ const SignIn = () => {
           </section>
 
           {errorMsg !== "" && (
-            <section class="px-4 pt-4">
-              <div class="w-100 bg-gray rounded shadow p-2">
+            <section className="px-4 pt-4">
+              <div className="w-100 bg-gray rounded shadow p-2">
                 <MdClose className="fs-4 fw-bold text-danger" />
                 {errorMsg}
               </div>

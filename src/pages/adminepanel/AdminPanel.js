@@ -212,11 +212,11 @@ const AdminPanel = () => {
   };
 
   return (
-    <div className="container">
+    <div className="container ">
       <Header />
       <div>
-        <div className="row">
-          <div className="col-md-4 offset-md-4 mt-5 shadow">
+        <div className="row mb-5 ">
+          <div className="col-md-4 offset-md-4 mt-5 shadow rounded">
             <div className="mt-2 text-center">
               <h4 className="fs-5 font-bolder">Let's create a course</h4>
             </div>
