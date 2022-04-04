@@ -25,6 +25,7 @@ const AdminPanel = () => {
   const [isImageUploading, setIsImageUploading] = useState(false);
   const [isThumbnailUploading, setIsThumbnailUploading] = useState(false);
   const [isVideoUploading, setIsVideoUploading] = useState("");
+  const [uploadedVideoUrl, setUploadVideoUrl] = useState("");
   const history = useHistory();
   const [videoName, setVideoName] = useState("");
 
@@ -70,6 +71,7 @@ const AdminPanel = () => {
           .getDownloadURL()
           .then((downloadUrl) => {
             console.log("Video Download URl", downloadUrl);
+            setUploadVideoUrl(downloadUrl);
           })
           .catch((err) => console.log(err));
       }
@@ -89,7 +91,8 @@ const AdminPanel = () => {
       authorName,
       profilePicUrl,
       courseDiscount,
-      thumbnailUrl
+      thumbnailUrl,
+      uploadedVideoUrl
     ).then((res) => {
       console.log("Course saved");
       history.push("/learn");

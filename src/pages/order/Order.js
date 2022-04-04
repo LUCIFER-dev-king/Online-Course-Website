@@ -22,6 +22,7 @@ const Order = () => {
   var courseIdList = [];
 
   const [orderIdForDb, setOrderIdForDb] = useState("");
+  console.log(location.state.isFromCart);
   if (courseList.length > 0) {
     courseList.forEach((item) => {
       totalPriceOfCourses += Math.floor(
@@ -79,24 +80,24 @@ const Order = () => {
     },
   };
 
+  //"https://us-central1-e-learn-website.cloudfunctions.net/paymentFunctions/makepayment",
+  //"https://us-central1-e-learn-website.cloudfunctions.net/paymentFunctions/verifypayment",
+
   const makePayment = (e) => {
     e.preventDefault();
     //"http://localhost:5001/e-learn-website/us-central1/paymentFunctions/makepayment"
     setOrderIdForDb(v4());
-    axios(
-      "https://us-central1-e-learn-website.cloudfunctions.net/paymentFunctions/makepayment",
-      {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        data: JSON.stringify({
-          amount: totalPriceOfCourses * 100,
-          orderId: orderIdForDb,
-        }),
-      }
-    )
+    axios("https://aqueous-plains-58324.herokuapp.com/makepayment", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      data: JSON.stringify({
+        amount: totalPriceOfCourses * 100,
+        orderId: orderIdForDb,
+      }),
+    })
       .then((res) => {
         setLoading(true);
         console.log(res.data);
@@ -114,17 +115,14 @@ const Order = () => {
 
   const verifyPayment = (response) => {
     //"http://localhost:5001/e-learn-website/us-central1/paymentFunctions/verifypayment"
-    axios(
-      "https://us-central1-e-learn-website.cloudfunctions.net/paymentFunctions/verifypayment",
-      {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        data: JSON.stringify(response),
-      }
-    )
+    axios("https://aqueous-plains-58324.herokuapp.com/verifypayment", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      data: JSON.stringify(response),
+    })
       .then((res) => {
         console.log(res.data);
 
@@ -133,7 +131,7 @@ const Order = () => {
           if (doc) {
             console.log("saved");
           }
-          if (courseList.length > 0) {
+          if (location.state.isFromCart) {
             removeCartList(user.uid);
           }
           setLoading(false);

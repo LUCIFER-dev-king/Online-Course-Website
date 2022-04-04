@@ -13,15 +13,17 @@ const Cart = () => {
 
   useEffect(() => {
     if (user !== null) {
-      getUserCart(user.uid).then((res) => {
-        setIsLoading((prev) => !prev);
+      setIsLoading((prev) => !prev);
 
+      getUserCart(user.uid).then((res) => {
         if (res !== undefined) {
           res.forEach((doc) => {
             getListOfCartCourses(doc).then((result) => {
               setCartList((prev) => [...prev, result]);
             });
           });
+          setIsLoading((prev) => !prev);
+        } else {
           setIsLoading((prev) => !prev);
         }
       });
@@ -42,6 +44,7 @@ const Cart = () => {
                     pathname: "/learn/courses/order",
                     state: {
                       courseList: cartList,
+                      isFromCart: true,
                     },
                   });
                 }}

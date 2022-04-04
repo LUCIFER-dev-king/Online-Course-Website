@@ -38,6 +38,7 @@ const CourseInfo = ({
           state: {
             courseList: courseList,
             syllabus: syllabus,
+            isFromCart: false,
           },
         });
       }

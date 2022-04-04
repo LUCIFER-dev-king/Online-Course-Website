@@ -3,7 +3,12 @@ import { db } from "../../../config/firebaseconfig";
 import { v4 } from "uuid";
 import "firebase/storage";
 
-const createVideoCollection = (docId, videoName, sectionName) => {
+const createVideoCollection = (
+  docId,
+  videoName,
+  sectionName,
+  uploadedVideoUrl
+) => {
   var sectionId = v4();
   var dbRef = db.collection("courses").doc(docId);
 
@@ -18,6 +23,7 @@ const createVideoCollection = (docId, videoName, sectionName) => {
         dbRef.collection("sections").doc(sectionId).collection("videos").add({
           videoName: videoName,
           finishedProcessing: false,
+          videoUrl: uploadedVideoUrl,
         });
         resolve();
       })
@@ -38,7 +44,8 @@ export const createCourse = (
   authorName,
   profilePicUrl,
   courseDiscount,
-  thumbnailUrl
+  thumbnailUrl,
+  uploadedVideoUrl
 ) => {
   var docId = v4();
   return db
@@ -58,7 +65,12 @@ export const createCourse = (
       rating: 2,
     })
     .then(async (doc) => {
-      return await createVideoCollection(docId, videoName, sectionName);
+      return await createVideoCollection(
+        docId,
+        videoName,
+        sectionName,
+        uploadedVideoUrl
+      );
     })
     .catch((err) => {
       console.log("Error:", err);

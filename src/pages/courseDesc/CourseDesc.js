@@ -31,6 +31,8 @@ const CourseDesc = () => {
   const [isUserEnrolled, setIsUserEnrolled] = useState(false);
   const [isCourseAddedToCart, setIsCourseAddedToCart] = useState(false);
   const [userDisplayName, setUserDisplayName] = useState("");
+  const [isStarClicked, setIsStarClick] = useState(false);
+  let reviewStars = [1, 2, 3, 4, 5];
   if (location.state === undefined) {
     history.goBack();
   }
@@ -200,36 +202,28 @@ const CourseDesc = () => {
               <div className="w-100  d-flex flex-column justify-content-start">
                 <div className="fw-bolder mt-4">Your Rating</div>
                 <div className="d-flex mt-1 align-items-center">
-                  <FaStar
-                    onClick={() => {
-                      setStarCount(1);
-                    }}
-                    color={starCount >= 1 ? "#e59819" : "#303030"}
-                  />
-                  <FaStar
-                    onClick={() => {
-                      setStarCount(2);
-                    }}
-                    color={starCount >= 2 ? "#e59819" : "#303030"}
-                  />
-                  <FaStar
-                    onClick={() => {
-                      setStarCount(3);
-                    }}
-                    color={starCount >= 3 ? "#e59819" : "#303030"}
-                  />
-                  <FaStar
-                    onClick={() => {
-                      setStarCount(4);
-                    }}
-                    color={starCount >= 4 ? "#e59819" : "#303030"}
-                  />
-                  <FaStar
-                    onClick={() => {
-                      setStarCount(5);
-                    }}
-                    color={starCount >= 5 ? "#e59819" : "#303030"}
-                  />
+                  {reviewStars.map((star, id) => (
+                    <FaStar
+                      onMouseEnter={() => {
+                        setStarCount(star);
+
+                        if (isStarClicked) {
+                          setIsStarClick((prev) => !prev);
+                        }
+                      }}
+                      onMouseLeave={() => {
+                        if (!isStarClicked) {
+                          setStarCount(0);
+                        }
+                      }}
+                      onClick={() => {
+                        setStarCount(star);
+                        setIsStarClick((prev) => !prev);
+                      }}
+                      style={{ cursor: "pointer" }}
+                      color={starCount >= star ? "#e59819" : "#303030"}
+                    />
+                  ))}
                 </div>
                 <div className="fw-bolder mt-3">Description</div>
                 <div className="border border-dark mt-1 ">
